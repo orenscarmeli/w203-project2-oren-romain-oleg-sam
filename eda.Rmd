@@ -209,7 +209,7 @@ d_dt <- as.data.table(d)
 ```
 ``` {r corrplot with transormed values}
 
-cols <- c('installs_clean', 'log_installs', 'log_reviews', 'log_size')
+cols <- c('Rating','install_group','installs_clean', 'log_installs', 'log_reviews', 'log_size')
 
 # Corrplot across variables
 corrplot(cor(d[,
