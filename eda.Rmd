@@ -4,6 +4,12 @@ output: pdf_document
 ---
 
 ```{r load packages, message = FALSE}
+install.packages("GGally")
+install.packages("moments")
+install.packages("corrplot")
+```
+
+```{r load libraries, message = FALSE}
 library(GGally)
 library(ggplot2) 
 library(lmtest)
@@ -11,6 +17,7 @@ library(moments)
 library(sandwich)
 library(stargazer)
 library(tidyverse)
+library(corrplot)
 
 source('./get_robust_se.R')
 ```
@@ -37,7 +44,8 @@ str_to_num <- function(s) {
     number <- as.numeric(substr(s, 0, n - 1)) * 1.0e3
   } else if (last == "+") {
     number <- as.numeric(str_replace_all(s, "[+,]", ""))
-  } else {
+  }
+    else {
     number <- as.numeric(s)
   }
   return(number)
@@ -52,6 +60,9 @@ d <- d[d$Size != "Varies with device", ]
 d$installs_clean <- sapply(d$Installs, str_to_num)
 d$reviews_clean  <- sapply(d$Reviews, str_to_num)
 d$size_clean     <- sapply(d$Size, str_to_num)
+
+# Additional sanitizations
+d$price_clean     <- as.numeric(gsub('\\$','',d$Price))
 ```
 
 > **I.I.D. data:** According to the Kaggle authors, this data set was collected by randomly scraping the Google Play Store. Since no clusters of applications were specifically targeted, we can reasonably use the entirety of the store as our reference population. We recognize that applications likely have some degree of interdependence, especially within genres. For example, the success of one application probably has a negative impact on other applications of the same type. Due to the large size of this data set (`r nrow(d)` records), however, we expect any dependencies to be negligible. We also have reason to believe that the data are identically distributed, as they are drawn from the same population of applications. One could argue that since the Google Play Store changes over time, the distribution also shifts in response. Because the authors do not mention the time frame across which the data was collected, we will assume that they originated from a single snapshot of the Play Store and that no shifts in the underlying distribution occurred.
@@ -65,13 +76,21 @@ cols <- c('log_installs', 'log_reviews', 'ratings', 'log_size')
 ggpairs(d[, cols])
 ```
 
+```{r eda}
+numeric_cols <- unlist(lapply(d, is.numeric))
+corrplot(cor(d[,numeric_cols], use = "complete.obs"), 
+         method = 'number')
+```
+
 ```{r preliminary models}
 model_small  <- lm(log_installs ~ 1 + log_reviews, data = d)
 model_medium <- lm(log_installs ~ 1 + log_reviews + ratings + log_size, data = d)
+model_large <- lm(log_installs ~ 1 + log_reviews + ratings + log_size + factor(Type), data = d)
 
 stargazer(
   model_small,
   model_medium,
+  model_large,
   type = 'text',
   se = list(get_robust_se(model_small), get_robust_se(model_medium))
 )
@@ -120,3 +139,18 @@ plot_5 <- plot(model_medium, which = 2)
 plot_5
 ```
 
+> ** Reverse Causality: ** We have to consider the possibility that high average reviews could lead to a higher number of installations which could lead to a higher average review. We will want to test for a reverse causality relationship between these two variables to determine if the best linear predictor is valid. 
+If we regress average reviews on installs, the installs coefficient (Gamma1) will have a positive slope. Since Beta1 (average review slope coefficent) > 0, we know higher average review leads to more installs. Since Gamma1 (installs slope cofficent for reverse causality) is > 0, this leads to positive feedback. Given we have two potentially positive coefficents, this could be a bias away from zero which is a concern that a reverse causality relationship exists between the two variables. 
+We could consider dropping average reviews as a variable and determine if there are other leading variables that can explain the number of installs for an app. 
+
+```{r reverse causlity}
+model_small  <- lm(log_installs ~ 1 + log_reviews, data = d)
+model_reverse  <- lm(log_reviews ~ 1 + log_installs, data = d)
+
+stargazer(
+  model_small,
+  model_reverse,
+  type = 'text',
+  se = list(get_robust_se(model_small), get_robust_se(model_medium))
+)
+```
