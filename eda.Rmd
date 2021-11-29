@@ -122,7 +122,8 @@ calc_avg_rating_by_group <-
     
     # calc summary statistics per unique element in categorical column
     result <- d_dt[, .(count_apps = .N,
-                       rating_avg = mean(Rating, na.rm = TRUE)), by = column][count_apps > 100][order(-rating_avg)]
+                       rating_avg = mean(Rating, na.rm = TRUE)), 
+                   by = column][count_apps > 100][order(-rating_avg)]
     setnames(result, column, 'group_by_column')
     result[, variable := column]
     
