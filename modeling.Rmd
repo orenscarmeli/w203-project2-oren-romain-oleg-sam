@@ -1,0 +1,125 @@
+---
+title: "modeling"
+output: pdf_document
+---
+
+```{r load packages, message = FALSE}
+library(GGally)
+library(ggplot2) 
+library(lmtest)
+library(lubridate)
+library(moments)
+library(sandwich)
+library(stargazer)
+library(tidyverse)
+
+source('./get_robust_se.R')
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load data}
+data <- read.csv('data/googleplaystore.csv')
+summary(data)
+```
+
+```{r data cleaning}
+clean_size <- function(s) {
+  n <- nchar(s)
+  last <- substr(s, n, n)
+  if (last == "B") {
+    k <- 10.0
+  } else if (last == "M") {
+    k <- 1.0
+  } else if (last == "k") {
+    k <- 0.1
+  } else {
+    return(NA)
+  }
+  return(as.numeric(substr(s, 1, n - 1)) * k)
+}
+
+clean_reviews <- function(s) {
+  n = nchar(s)
+  last <- substr(s, n, n + 1)
+  if (last == "M") {
+    return(as.numeric(substr(s, 1, n - 1)) * 1.0e6)
+  } else {
+    return(as.numeric(s))
+  }
+}
+
+MAX_DATE = suppressWarnings(max(mdy(data$Last.Updated), na.rm = TRUE))
+clean_date <- function(d) {
+  return(interval(d, MAX_DATE) / years(1))
+}
+
+data_clean <- data %>%
+  distinct() %>%
+  mutate(
+    installs            = suppressWarnings(as.numeric(gsub("[\\+,]", "", Installs))),
+    size                = sapply(Size, clean_size),
+    reviews             = sapply(Reviews, clean_reviews),
+    rating              = Rating,
+    price               = suppressWarnings(as.numeric(gsub("\\$", "", as.character(Price)))),
+    is_free             = price == 0,
+    last_updated        = suppressWarnings(mdy(Last.Updated)),
+    last_updated        = interval(last_updated, MAX_DATE) / years(1),
+    android_ver         = suppressWarnings(as.numeric(substr(gsub("Varies with device", NA, Android.Ver), start = 1, stop = 3))),
+    current_version     = suppressWarnings(as.numeric(substr(gsub("Varies with device", NA, Current.Ver), start = 1, stop = 3))),
+    category            = Category,
+    is_family_category  = category == "FAMILY",
+    is_game_category    = category == "GAME",
+    is_tools_category   = category == "TOOLS",
+    genre               = Genres,
+    content_rating      = Content.Rating,
+    is_content_everyone = content_rating == "Everyone"
+  ) %>%
+  select(., installs, size, reviews, rating, price, is_free, last_updated,
+         android_ver, current_version, category, is_family_category,
+         is_game_category, is_tools_category, genre, content_rating,
+         is_content_everyone) %>%
+  drop_na() %>%
+  filter(., reviews >= 100, rating <= 5.0)
+glimpse(data_clean)
+```
+
+```{r transformations}
+data_clean$log_installs        <- log10(data_clean$installs)
+data_clean$log_size            <- log10(data_clean$size)
+data_clean$log_current_version <- log10(data_clean$current_ver + 1)
+data_clean$log_last_updated    <- log10(data_clean$last_updated + 1)
+```
+
+```{r preliminary models}
+model_small  <- lm(log_installs ~ 1 + rating, data = data_clean)
+model_medium <- lm(log_installs ~ 1 + rating + log_size + log_current_version +
+                     log_last_updated + is_free + is_family_category + 
+                     is_game_category + is_tools_category + is_content_everyone,
+                   data = data_clean)
+model_large  <- lm(log_installs ~ 1 + rating + log_size + log_current_version +
+                     log_last_updated + is_free + is_content_everyone +
+                     rating * is_family_category + rating * is_game_category + 
+                     rating * is_tools_category,
+                   data = data_clean)
+
+stargazer(
+  model_small,
+  model_medium,
+  model_large,
+  type = "text",
+  se = list(get_robust_se(model_small), get_robust_se(model_medium), 
+            get_robust_se(model_large))
+)
+
+plot(model_small)
+plot(model_medium)
+plot(model_large)
+```
+
+```{r qq plot}
+plot(model_large)
+```
+
