@@ -25,11 +25,13 @@ source('./get_robust_se.R')
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# prevent scientific notation
+options(scipen=999) 
 ```
 
 ```{r load data}
 d <- read.csv('data/googleplaystore.csv')
-d_dt <- as.data.table(d)
 summary(d)
 ```
 
@@ -62,16 +64,53 @@ d <- d[d$Size != "Varies with device", ]
 d$installs_clean <- sapply(d$Installs, str_to_num)
 d$reviews_clean  <- sapply(d$Reviews, str_to_num)
 d$size_clean     <- sapply(d$Size, str_to_num)
-
-# Additional sanitizations
 d$price_clean     <- as.numeric(gsub('\\$','',d$Price))
+
+# Bins for install count
+
+# install groups-- increments by 1, there are 19 of them.
+install_groups <- data.table(table(d$installs_clean))
+setnames(install_groups,c('V1','N'),c('installs_clean','count'))
+install_groups[, install_group := 1:.N]
+install_groups <- install_groups[,c('installs_clean','install_group')]
+install_groups
+d <- merge(d,install_groups,by='installs_clean')
+
+# summary of dataset
+summary(d)
+
+# save a data.table version for some easier wrangling downstream
+d_dt <- as.data.table(d)
 ```
 
-```{r eda_numeric_columns}
-numeric_cols <- unlist(lapply(d, is.numeric))
+```{r eda numeric columns}
+numeric_cols <- colnames(d)[unlist(lapply(d, is.numeric))]
+
+# show distribution of numeric columns
+create_quantile_table <- function(column) {
+  probs <- sort(c(seq(0, 1, 0.25), 0.05, 0.95))
+  result <-
+    as.data.table(t(data.table(quantile(d[, column], probs = probs))))
+  setnames(result, paste0(probs * 100, '%'))
+  result[, variable := column]
+  result[, diff_min_vs_max := `100%` - `0%`]
+  return(result)
+  
+}
+
+table_quantile_numeric <- rbindlist(lapply(numeric_cols,create_quantile_table))
+table_quantile_numeric
 
 # Corrplot across variables
 corrplot(cor(d[,numeric_cols], use = "complete.obs"), 
+         method = 'number')
+
+# Corrplot across variables (5th PCTL outliers removed)
+corrplot(cor(d[d$reviews_clean >= 6,numeric_cols], use = "complete.obs"), 
+         method = 'number')
+
+# Corrplot across variables (25th PCTL outliers removed)
+corrplot(cor(d[d$reviews_clean >= 100,numeric_cols], use = "complete.obs"), 
          method = 'number')
 
 # Distribution of numeric columns
@@ -85,6 +124,12 @@ ggplot(data = d, aes(x = installs_clean)) +
   geom_histogram()
 
 ggplot(data = d, aes(x = log(installs_clean))) +
+  geom_histogram()
+
+ggplot(data = d, aes(x = install_group)) +
+  geom_histogram()
+
+ggplot(data = d, aes(x = log(install_group))) +
   geom_histogram()
 
 ggplot(data = d, aes(x = reviews_clean)) +
@@ -107,7 +152,7 @@ ggplot(data = d, aes(x = log(price_clean))) +
 ```
 
 
-``` {r eda_categorical_columns}
+``` {r eda categorical columns}
 
 categorical_cols <- c(
   'Category',
@@ -117,20 +162,21 @@ categorical_cols <- c(
   'Android.Ver'
 )
 
-calc_avg_rating_by_group <-
+calc_stats_by_group <-
   function(column, quantile_table = FALSE) {
     
     # calc summary statistics per unique element in categorical column
     result <- d_dt[, .(count_apps = .N,
-                       rating_avg = mean(Rating, na.rm = TRUE)), 
-                   by = column][count_apps > 100][order(-rating_avg)]
+                       install_group_mean = mean(install_group, na.rm = TRUE),
+                       install_count_median = median(installs_clean, na.rm = TRUE)), 
+                   by = column][count_apps > 100][order(-install_group_mean)]
     setnames(result, column, 'group_by_column')
     result[, variable := column]
     
     # create a table that shows the distribution across group averages
     if (quantile_table) {
       result <- as.data.table(t(data.table(quantile(
-        result$rating_avg
+        result$install_group_mean
       ))))
       setnames(result, c('0%', '25%', '50%', '75%', '100%'))
       result[, variable := column]
@@ -140,14 +186,14 @@ calc_avg_rating_by_group <-
   }
 
 # perform function across all categorical columns 
-table_long <- rbindlist(lapply(categorical_cols, calc_avg_rating_by_group))
-table_quantile <- rbindlist(lapply(categorical_cols, calc_avg_rating_by_group,quantile_table=TRUE))
+table_long_cat <- rbindlist(lapply(categorical_cols, calc_stats_by_group))
+table_quantile_cat <- rbindlist(lapply(categorical_cols, calc_stats_by_group,quantile_table=TRUE))
 
-# compare avg rating by group
-table_long
+# compare mean install grp across variable values
+table_long_cat
 
-# compare distribution of avg rating across groups
-table_quantile
+# compare distribution of mean install grp across variable values
+table_quantile_cat
 ```
 > **I.I.D. data:** According to the Kaggle authors, this data set was collected by randomly scraping the Google Play Store. Since no clusters of applications were specifically targeted, we can reasonably use the entirety of the store as our reference population. We recognize that applications likely have some degree of interdependence, especially within genres. For example, the success of one application probably has a negative impact on other applications of the same type. Due to the large size of this data set (`r nrow(d)` records), however, we expect any dependencies to be negligible. We also have reason to believe that the data are identically distributed, as they are drawn from the same population of applications. One could argue that since the Google Play Store changes over time, the distribution also shifts in response. Because the authors do not mention the time frame across which the data was collected, we will assume that they originated from a single snapshot of the Play Store and that no shifts in the underlying distribution occurred.
 
@@ -158,7 +204,29 @@ d$ratings      <- d$Rating
 d$log_size     <- log10(d$size_clean + 1)
 cols <- c('log_installs', 'log_reviews', 'ratings', 'log_size')
 ggpairs(d[, cols])
+
+# save a data.table version for some easier wrangling downstream
+d_dt <- as.data.table(d)
 ```
+``` {r corrplot with transormed values}
+
+cols <- c('Rating','install_group','installs_clean', 'log_installs', 'log_reviews', 'log_size')
+
+# Corrplot across variables
+corrplot(cor(d[,
+               cols], use = "complete.obs"), 
+         method = 'number')
+
+# Corrplot across variables (5th PCTL outliers removed)
+corrplot(cor(d[d$reviews_clean >= 6,cols], use = "complete.obs"), 
+         method = 'number')
+
+# Corrplot across variables (25th PCTL outliers removed)
+corrplot(cor(d[d$reviews_clean >= 100,cols], use = "complete.obs"), 
+         method = 'number')
+
+```
+
 
 ```{r preliminary models}
 model_small  <- lm(log_installs ~ 1 + log_reviews, data = d)
