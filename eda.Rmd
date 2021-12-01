@@ -19,6 +19,7 @@ library(stargazer)
 library(tidyverse)
 library(corrplot)
 library(data.table)
+library(lubridate)
 
 source('./functions/get_robust_se.R')
 source('./functions/get_clean_dataset.R')
@@ -69,24 +70,24 @@ corrplot(cor(d[,numeric_cols], use = "complete.obs"),
          method = 'number')
 
 # Corrplot across variables (5th PCTL outliers removed)
-corrplot(cor(d[d$reviews_clean >= 6,numeric_cols], use = "complete.obs"), 
+corrplot(cor(d[d$reviews >= 6,numeric_cols], use = "complete.obs"), 
          method = 'number')
 
 # Corrplot across variables (25th PCTL outliers removed)
-corrplot(cor(d[d$reviews_clean >= 100,numeric_cols], use = "complete.obs"), 
+corrplot(cor(d[d$reviews >= 100,numeric_cols], use = "complete.obs"), 
          method = 'number')
 
 # Distribution of numeric columns
-ggplot(data = d, aes(x = Rating)) +
+ggplot(data = d, aes(x = rating)) +
   geom_histogram()
 
-ggplot(data = d, aes(x = log(Rating))) +
+ggplot(data = d, aes(x = log(rating))) +
   geom_histogram()
 
-ggplot(data = d, aes(x = installs_clean)) +
+ggplot(data = d, aes(x = installs)) +
   geom_histogram()
 
-ggplot(data = d, aes(x = log(installs_clean))) +
+ggplot(data = d, aes(x = log(installs))) +
   geom_histogram()
 
 ggplot(data = d, aes(x = install_group)) +
@@ -95,22 +96,22 @@ ggplot(data = d, aes(x = install_group)) +
 ggplot(data = d, aes(x = log(install_group))) +
   geom_histogram()
 
-ggplot(data = d, aes(x = reviews_clean)) +
+ggplot(data = d, aes(x = reviews)) +
   geom_histogram()
 
-ggplot(data = d, aes(x = log(reviews_clean))) +
+ggplot(data = d, aes(x = log(reviews))) +
   geom_histogram()
 
-ggplot(data = d, aes(x = size_clean)) +
+ggplot(data = d, aes(x = size)) +
   geom_histogram()
 
-ggplot(data = d, aes(x = log(size_clean))) +
+ggplot(data = d, aes(x = log(size))) +
   geom_histogram()
 
-ggplot(data = d, aes(x = price_clean)) +
+ggplot(data = d, aes(x = price)) +
   geom_histogram()
 
-ggplot(data = d, aes(x = log(price_clean))) +
+ggplot(data = d, aes(x = log(price))) +
   geom_histogram()
 ```
 
@@ -118,11 +119,11 @@ ggplot(data = d, aes(x = log(price_clean))) +
 ``` {r eda categorical columns}
 
 categorical_cols <- c(
-  'Category',
-  'Type',
-  'Content.Rating',
-  'Current.Ver',
-  'Android.Ver'
+  'category',
+  'type',
+  'content_rating',
+  'current_version',
+  'android_version'
 )
 
 calc_stats_by_group <-
@@ -131,7 +132,7 @@ calc_stats_by_group <-
     # calc summary statistics per unique element in categorical column
     result <- d_dt[, .(count_apps = .N,
                        install_group_avg = mean(install_group, na.rm = TRUE),
-                       install_count_med = median(installs_clean, na.rm = TRUE)), 
+                       install_count_med = median(installs, na.rm = TRUE)), 
                    by = column][count_apps > 100][order(-install_group_avg)]
     setnames(result, column, 'group_by_column')
     result[, variable := column]
@@ -169,7 +170,7 @@ d_dt <- as.data.table(d)
 ```
 ``` {r corrplot with transormed values}
 
-cols <- c('Rating','install_group','installs_clean', 'log_installs', 'log_reviews', 'log_size')
+cols <- c('rating','install_group','installs', 'log_installs', 'log_reviews', 'log_size')
 
 # Corrplot across variables
 corrplot(cor(d[,
@@ -177,11 +178,11 @@ corrplot(cor(d[,
          method = 'number')
 
 # Corrplot across variables (5th PCTL outliers removed)
-corrplot(cor(d[d$reviews_clean >= 6,cols], use = "complete.obs"), 
+corrplot(cor(d[d$reviews >= 6,cols], use = "complete.obs"), 
          method = 'number')
 
 # Corrplot across variables (25th PCTL outliers removed)
-corrplot(cor(d[d$reviews_clean >= 100,cols], use = "complete.obs"), 
+corrplot(cor(d[d$reviews >= 100,cols], use = "complete.obs"), 
          method = 'number')
 
 ```
@@ -189,8 +190,8 @@ corrplot(cor(d[d$reviews_clean >= 100,cols], use = "complete.obs"),
 
 ```{r preliminary models}
 model_small  <- lm(log_installs ~ 1 + log_reviews, data = d)
-model_medium <- lm(log_installs ~ 1 + log_reviews + ratings + log_size, data = d)
-model_large <- lm(log_installs ~ 1 + log_reviews + ratings + log_size + factor(Type), data = d)
+model_medium <- lm(log_installs ~ 1 + log_reviews + rating + log_size, data = d)
+model_large <- lm(log_installs ~ 1 + log_reviews + rating + log_size + factor(type), data = d)
 
 stargazer(
   model_small,
@@ -201,9 +202,9 @@ stargazer(
 )
 ```
 
-> 2. **No Perfect Colinearity:** We can immediately conclude that `log_installs`, `log_reviews`, `ratings`, and `log_size` are not perfectly colinear as otherwise the regression above would have failed. We can also assess near perfect colinearity for these variables by observing the robust standard errors returned by the regression model. In general, highly colinear features will have large standard errors. Since the standard error of the coefficients are small relative to their magnitude, we can reasonably conclude that they are not nearly colinear.
+> 2. **No Perfect Colinearity:** We can immediately conclude that `log_installs`, `log_reviews`, `rating`, and `log_size` are not perfectly colinear as otherwise the regression above would have failed. We can also assess near perfect colinearity for these variables by observing the robust standard errors returned by the regression model. In general, highly colinear features will have large standard errors. Since the standard error of the coefficients are small relative to their magnitude, we can reasonably conclude that they are not nearly colinear.
 
-> 3. **Linear Conditional Expectation:** To verify the assumption of linear conditional expectations, we seek to show that there is no relationship between the model residuals and any of the predictor variables. That is, the model does not systematically underpredict or overpredict in certain regions of the input space. Plots 1 through 3 show the relationships between the model residuals and individual predictors. The residuals are generally well-centered around zero, although the model seems to underpredict when `log_reviews` is high and `ratings` is low. The fourth plot shows the model residuals as a function of the model predictions. Here, the model seems to underpredict in the left-most and right-most regions, and slightly overpredict in the middle. Overall, there are no strong non-linear relationships between the model residuals and the input features, and we do not find enough evidence to reject the assumption of linear conditional expectation.  
+> 3. **Linear Conditional Expectation:** To verify the assumption of linear conditional expectations, we seek to show that there is no relationship between the model residuals and any of the predictor variables. That is, the model does not systematically underpredict or overpredict in certain regions of the input space. Plots 1 through 3 show the relationships between the model residuals and individual predictors. The residuals are generally well-centered around zero, although the model seems to underpredict when `log_reviews` is high and `rating` is low. The fourth plot shows the model residuals as a function of the model predictions. Here, the model seems to underpredict in the left-most and right-most regions, and slightly overpredict in the middle. Overall, there are no strong non-linear relationships between the model residuals and the input features, and we do not find enough evidence to reject the assumption of linear conditional expectation.  
 
 ```{r code and plots assessing linear conditional expectation}
 # Reviews versus residuals
@@ -212,7 +213,7 @@ plot_1 <- ggplot(data = d, mapping = aes(x = log_reviews, y = resid(model_medium
 plot_1
 
 # Ratings versus residuals
-plot_2 <- ggplot(data = d, mapping = aes(x = ratings, y = resid(model_medium))) +
+plot_2 <- ggplot(data = d, mapping = aes(x = rating, y = resid(model_medium))) +
   geom_point() + stat_smooth()
 plot_2
 

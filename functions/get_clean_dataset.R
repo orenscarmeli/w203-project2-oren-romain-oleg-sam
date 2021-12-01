@@ -53,7 +53,7 @@ get_clean_dataset <- function(minimum_review_count = 100) {
       is_free             = price == 0,
       last_updated        = suppressWarnings(mdy(Last.Updated)),
       last_updated        = interval(last_updated, MAX_DATE) / years(1),
-      android_ver         = suppressWarnings(as.numeric(substr(
+      android_version         = suppressWarnings(as.numeric(substr(
         gsub("Varies with device", NA, Android.Ver),
         start = 1,
         stop = 3
@@ -69,7 +69,8 @@ get_clean_dataset <- function(minimum_review_count = 100) {
       is_tools_category   = category == "TOOLS",
       genre               = Genres,
       content_rating      = Content.Rating,
-      is_content_everyone = content_rating == "Everyone"
+      is_content_everyone = content_rating == "Everyone",
+      type = Type
     ) %>%
     select(
       .,
@@ -80,7 +81,7 @@ get_clean_dataset <- function(minimum_review_count = 100) {
       price,
       is_free,
       last_updated,
-      android_ver,
+      android_version,
       current_version,
       category,
       is_family_category,
@@ -88,7 +89,8 @@ get_clean_dataset <- function(minimum_review_count = 100) {
       is_tools_category,
       genre,
       content_rating,
-      is_content_everyone
+      is_content_everyone,
+      type
     ) %>%
     drop_na() %>%
     filter(., reviews >= minimum_review_count, rating <= 5.0)
