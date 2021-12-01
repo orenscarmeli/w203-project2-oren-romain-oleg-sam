@@ -4,6 +4,7 @@ author: "Oleg Ananyev, Oren Carmeli, Romain Hardy, Sam Rosenberg"
 date: 'Fall 2021'
 output:
   pdf_document: default
+urlcolor: blue
 header_includes:
 - \usepackage{amsmath}
 - \usepackage{amssymb}
@@ -18,7 +19,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 
 The Google Play Store is one of the major hubs for applications for Android mobile phone and tablet users. Users are can download any app on the Google Play Store for personal consumption, however in a sea of tens of thousands of apps or more, we would like to determine the drivers for app downloads. Given that most phones have limited screen real estate and they are intended for light computational tasks, getting an app in-front of a consumer is a challenging proposition as developers have several factors going against them (e.g., vast quantity of duplicate apps, limited screen real estate for ads, limited screen time by most users, etc.).
-With this in mind - we would like to determine the key drivers to app downloads on the Google Play Store using a fairly robust [dataset from Kaggle](https://www.kaggle.com/lava18/google-play-store-apps) from 2019 that contains records of ~10,000 apps available from the Google Play Store. 
+With this in mind - we would like to determine the key drivers to app downloads on the Google Play Store using a fairly robust dataset from [Kaggle](https://www.kaggle.com/lava18/google-play-store-apps) from 2019 that contains records of ~10,000 apps available from the Google Play Store. 
 
 Statista [reports](https://www.statista.com/statistics/271644/worldwide-free-and-paid-mobile-app-store-downloads/) there were ~220 billion mobile application downloads globally in 2020. Another [study](https://buildfire.com/app-statistics/) found that ~70% of all US digital media is spent on mobile applications. Mobile app usage is becoming the focal interaction medium in which organizations can engage and help their customers and it is useful for organizations to further understand drivers that help lead to more mobile application usage and a better customer experience. This dataset allows to analyze the potential levers to app downloads such as average review rating, price, app size, app category, etc. With this dataset, we will plan to build a statistical linear model to determine the importance (or unimportance) of each of these variables on app downloads. Given our beliefs on what causes individuals to download a mobile application we believe there are some important ommitted variables that can influence app downloads such as brand awareness from marketing campaigns, the size of existing customer bases, seasonality, and individual life circumstances. Despite these limitations, we believe the dataset provides useful information to evaluate the importance of other characterstics outside of these external factors. 
 
