@@ -20,7 +20,8 @@ library(tidyverse)
 library(corrplot)
 library(data.table)
 
-source('./get_robust_se.R')
+source('./functions/get_robust_se.R')
+source('./functions/get_clean_dataset.R')
 ```
 
 ```{r setup, include=FALSE}
@@ -35,46 +36,8 @@ d <- read.csv('data/googleplaystore.csv')
 summary(d)
 ```
 
-```{r data cleaning}
-# Function to convert strings to numbers
-str_to_num <- function(s) {
-  n <- nchar(s)
-  last <- substr(s, n, n + 1)
-  if (last == "B") {
-    number <- as.numeric(substr(s, 0, n - 1)) * 1.0e9
-  } else if (last == "M") {
-    number <- as.numeric(substr(s, 0, n - 1)) * 1.0e6
-  } else if (last == "k") {
-    number <- as.numeric(substr(s, 0, n - 1)) * 1.0e3
-  } else if (last == "+") {
-    number <- as.numeric(str_replace_all(s, "[+,]", ""))
-  }
-    else {
-    number <- as.numeric(s)
-  }
-  return(number)
-}
-
-# Remove entries with bad values
-d <- d[d$Installs != "Free", ]
-d <- d[!is.nan(d$Rating), ]
-d <- d[d$Size != "Varies with device", ]
-
-# Convert strings to numbers
-d$installs_clean <- sapply(d$Installs, str_to_num)
-d$reviews_clean  <- sapply(d$Reviews, str_to_num)
-d$size_clean     <- sapply(d$Size, str_to_num)
-d$price_clean     <- as.numeric(gsub('\\$','',d$Price))
-
-# Bins for install count
-
-# install groups-- increments by 1, there are 19 of them.
-install_groups <- data.table(table(d$installs_clean))
-setnames(install_groups,c('V1','N'),c('installs_clean','count'))
-install_groups[, install_group := 1:.N]
-install_groups <- install_groups[,c('installs_clean','install_group')]
-install_groups
-d <- merge(d,install_groups,by='installs_clean')
+```{r data load and cleaning}
+d <- get_clean_dataset()
 
 # summary of dataset
 summary(d)
