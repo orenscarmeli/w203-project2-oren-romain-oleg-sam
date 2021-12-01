@@ -12,6 +12,7 @@ library(moments)
 library(sandwich)
 library(stargazer)
 library(tidyverse)
+library(data.table)
 
 source('./get_robust_se.R')
 ```
@@ -83,6 +84,14 @@ data_clean <- data %>%
          is_content_everyone) %>%
   drop_na() %>%
   filter(., reviews >= 100, rating <= 5.0)
+
+# bins for install count: install groups-- increments by 1, there are 19 of them.
+install_groups <- data.table(table(data_clean$installs))
+setnames(install_groups,c('V1','N'),c('installs','count'))
+install_groups[, install_group := 1:.N]
+install_groups <- install_groups[,c('installs','install_group')]
+data_clean <- merge(data_clean,install_groups,by='installs')
+
 glimpse(data_clean)
 ```
 
