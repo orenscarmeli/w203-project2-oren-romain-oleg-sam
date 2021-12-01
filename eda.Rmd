@@ -21,8 +21,11 @@ library(corrplot)
 library(data.table)
 library(lubridate)
 
+# various functions for wrangling
 source('./functions/get_robust_se.R')
 source('./functions/get_clean_dataset.R')
+source('./functions/eda_calculate_stats_by_group.R')
+source('./functions/eda_build_quantile_table.R')
 ```
 
 ```{r setup, include=FALSE}
@@ -50,19 +53,7 @@ d_dt <- as.data.table(d)
 ```{r eda numeric columns}
 numeric_cols <- colnames(d)[unlist(lapply(d, is.numeric))]
 
-# show distribution of numeric columns
-create_quantile_table <- function(column) {
-  probs <- sort(c(seq(0, 1, 0.25), 0.05, 0.95))
-  result <-
-    as.data.table(t(data.table(quantile(d[, column], probs = probs))))
-  setnames(result, paste0(probs * 100, '%'))
-  result[, variable := column]
-  result[, diff_min_vs_max := `100%` - `0%`]
-  return(result)
-  
-}
-
-table_quantile_numeric <- rbindlist(lapply(numeric_cols,create_quantile_table))
+table_quantile_numeric <- rbindlist(lapply(numeric_cols,eda_build_quantile_table))
 table_quantile_numeric
 
 # Corrplot across variables
@@ -126,32 +117,9 @@ categorical_cols <- c(
   'android_version'
 )
 
-calc_stats_by_group <-
-  function(column, quantile_table = FALSE) {
-    
-    # calc summary statistics per unique element in categorical column
-    result <- d_dt[, .(count_apps = .N,
-                       install_group_avg = mean(install_group, na.rm = TRUE),
-                       install_count_med = median(installs, na.rm = TRUE)), 
-                   by = column][count_apps > 100][order(-install_group_avg)]
-    setnames(result, column, 'group_by_column')
-    result[, variable := column]
-    
-    # create a table that shows the distribution across group averages
-    if (quantile_table) {
-      result <- as.data.table(t(data.table(quantile(
-        result$install_group_avg
-      ))))
-      setnames(result, c('0%', '25%', '50%', '75%', '100%'))
-      result[, variable := column]
-      result[, diff_min_vs_max := `100%` - `0%`]
-    }
-    return(result)
-  }
-
 # perform function across all categorical columns 
-table_long_cat <- rbindlist(lapply(categorical_cols, calc_stats_by_group))
-table_quantile_cat <- rbindlist(lapply(categorical_cols, calc_stats_by_group,quantile_table=TRUE))
+table_long_cat <- rbindlist(lapply(categorical_cols, eda_calculate_stats_by_group))
+table_quantile_cat <- rbindlist(lapply(categorical_cols, eda_calculate_stats_by_group,quantile_table=TRUE))
 
 # compare mean install grp across variable values
 table_long_cat
