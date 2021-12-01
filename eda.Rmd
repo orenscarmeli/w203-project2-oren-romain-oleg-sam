@@ -161,11 +161,7 @@ table_quantile_cat
 > **I.I.D. data:** According to the Kaggle authors, this data set was collected by randomly scraping the Google Play Store. Since no clusters of applications were specifically targeted, we can reasonably use the entirety of the store as our reference population. We recognize that applications likely have some degree of interdependence, especially within genres. For example, the success of one application probably has a negative impact on other applications of the same type. Due to the large size of this data set (`r nrow(d)` records), however, we expect any dependencies to be negligible. We also have reason to believe that the data are identically distributed, as they are drawn from the same population of applications. One could argue that since the Google Play Store changes over time, the distribution also shifts in response. Because the authors do not mention the time frame across which the data was collected, we will assume that they originated from a single snapshot of the Play Store and that no shifts in the underlying distribution occurred.
 
 ```{r transformations and correlations}
-d$log_installs <- log10(d$installs_clean + 1)
-d$log_reviews  <- log10(d$reviews_clean + 1)
-d$ratings      <- d$Rating
-d$log_size     <- log10(d$size_clean + 1)
-cols <- c('log_installs', 'log_reviews', 'ratings', 'log_size')
+cols <- c('log_installs', 'log_reviews', 'rating', 'log_size')
 ggpairs(d[, cols])
 
 # save a data.table version for some easier wrangling downstream
