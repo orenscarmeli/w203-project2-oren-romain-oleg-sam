@@ -3,6 +3,16 @@ title: "modeling"
 output: pdf_document
 ---
 
+``` {r install packages}
+#install.packages('GGally')
+#install.packages('moments')
+#install.packages("corrplot") 
+
+install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
+install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
+install.packages("corrplot", repos = "http://cran.us.r-project.org") 
+```
+
 ```{r load packages, message = FALSE}
 library(GGally)
 library(ggplot2) 
