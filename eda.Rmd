@@ -41,7 +41,7 @@ summary(d)
 ```
 
 ```{r data load and cleaning}
-d <- get_clean_dataset()
+d <- get_clean_dataset(minimum_review_count = 0)
 
 # summary of dataset
 summary(d)
@@ -51,7 +51,17 @@ d_dt <- as.data.table(d)
 ```
 
 ```{r eda numeric columns}
-numeric_cols <- colnames(d)[unlist(lapply(d, is.numeric))]
+numeric_cols <- c(
+  'installs',
+  'size',
+  'reviews',
+  'rating',
+  'price',
+  'log_installs',
+  'log_size',
+  'log_reviews',
+  'log_price'
+)
 
 table_quantile_numeric <- rbindlist(lapply(numeric_cols,eda_build_quantile_table))
 table_quantile_numeric

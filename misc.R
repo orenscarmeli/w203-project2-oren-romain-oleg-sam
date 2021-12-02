@@ -1,0 +1,20 @@
+library(GGally)
+library(ggplot2) 
+library(lmtest)
+library(moments)
+library(sandwich)
+library(stargazer)
+library(tidyverse)
+library(corrplot)
+library(data.table)
+library(lubridate)
+
+# various functions for wrangling
+setwd("~/w203-project2-oren-romain-oleg-sam/")
+source('.functions/get_robust_se.R')
+source('./functions/get_clean_dataset.R')
+source('./functions/eda_calculate_stats_by_group.R')
+source('./functions/eda_build_quantile_table.R')
+
+data_clean <- get_clean_dataset()
+colnames(data_clean)
