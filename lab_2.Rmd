@@ -39,25 +39,32 @@ The paper is structured as follows. Section 2 outlines our research question, th
 \section{Data and Research Design}
 
 >Lab 2 Intructions: After you have presented the introduction and the concepts that are under investigation, what data are you going to use to answer the questions? What type of research design are you using? What type of models are you going to estimate, and what goals do you have for these models?  
-**Research Question: Does average rating increase the number of downloads a Google Play mobile application accumulates. This is a causal question. 
 
-To investigate our research question, we will leverage a publicly available data set of apps available on the Google App Store with key information such as downloads, file size, rating, category, price, etc. This data set was scrapped in 2019 and made available on Kaggle.com for use by anyone with interest. It contains records of ~10,000 app available on the Google Play Store. Given the size of our dataset, we will use OLS regression to answer our research question. OLS regression is a plug-in estimator of the best linear predictor for the joint distribution of various random variables. In this case, the random variables of interest include the various attributes of Google Play mobile applications. The specific variables we will use include:
+The goal of this study is to assess the causal factors of application success. Specifically, we seek to determine if there is a statistically significant relationship between average consumer rating and application downloads. In the ensuing sections, we will answer the following question:
 
-Dependent Variable: 
+>\textit{Does a higher average consumer rating lead to greater downloads for Google Play Store applications?}
 
-* installs = total installs the application accumulated
+\par
+In order to answer this question, we will leverage publicly available data about applications available on the Google Play Store. This data was randomly scraped from the Google Play Store interface and uploaded to Kaggle.com in 2019. It contains key information about each sampled application, such as downloads, file size, rating, category, and price. In total, the data contains records of ~10,000 applications. 
 
-Independent Variables:
+\par
+For the modeling step, we will use OLS regression. OLS regression is the plug-in estimator for the best linear predictor of a dependent random variable given the joint distribution of a set of independent random variables. In our case, the dependent variable is our conceptualization of application success (the number of downloads an application receives), and the independent variables are the various attributes of Google Play Store applications. Although OLS regression is often used with the goal of making predictions on new data, here it will be used it to answer a causal question about the relationship between variables. By interpreting model coefficients within the context of a causal theory, we will develop a statistically valid argument that answers the research question. 
 
-* size = the memory space the application takes up
-* reviews = total reviews the application accumulated. This won't be an independent variable, it will be used to filter out outliers. More details in our EDA section
-* rating = the average rating for the application (out of 5 stars).
-* price = the price to download the application (0 = free)
-* category = the category tagged for the application (i.e Lifestyle)
-* content_rating = rating assigned to the application (i.e Teen, Everyone, Mature 17+)
-* type = Options include Free (free to download) or Paid (costs money to download)
+Our analysis will make use the following variables:
 
-OLS regression is built with a goal of making predictions on new data. But, we see believe it will help answer the causal question describing the relationships across our independent and dependent variables. We believe that through exploratory data analysis, measuring the prediction power of the model, and conceptualizing the coefficient estimates we can properly inform and develop a statistically sound argument around our research question. 
+\textbf{Dependent Variable:} 
+
+* `installs` — The accumulated number of installs since the application was uploaded to the Google Play Store
+
+\textbf{Independent Variables:}
+
+* `size` — The memory space occupied by the application.
+* `reviews` — The accumulated number of reviews since the application was uploaded to the Google Play Store. This feature will be used to remove outliers (see the EDA section). 
+* `rating` — The average consumer rating for the application out of 5.
+* `price` — The price of the application.
+* `category` — The category tagged for the application (i.e Lifestyle, Game)
+* `content_rating` — The official content rating given to the application (i.e Teen, Everyone, Mature 17+)
+* `type` — The price type of the application. Possible options are Free (free to download) or Paid (costs money to download).
 
 \subsection{Model Building}
 
