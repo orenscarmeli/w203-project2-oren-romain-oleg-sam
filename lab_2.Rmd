@@ -3,7 +3,8 @@ title: 'Lab 2 Research Proposal'
 author: "Oleg Ananyev, Oren Carmeli, Romain Hardy, Sam Rosenberg"
 date: 'Fall 2021'
 output:
-  pdf_document: default
+  bookdown::pdf_document2: 
+    toc: false
 urlcolor: blue
 header_includes:
 - \usepackage{amsmath}
@@ -13,6 +14,7 @@ header_includes:
 
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+options(tinytex.verbose = TRUE)
 ```
 
 \section{Introduction}
@@ -50,11 +52,11 @@ In order to answer this question, we will leverage publicly available data about
 \par
 For the modeling step, we will use OLS regression. OLS regression is the plug-in estimator for the best linear predictor of a dependent random variable given the joint distribution of a set of independent random variables. In our case, the dependent variable is our conceptualization of application success (the number of downloads an application receives), and the independent variables are the various attributes of Google Play Store applications. Although OLS regression is often used with the goal of making predictions on new data, here it will be used it to answer a causal question about the relationship between variables. By interpreting model coefficients within the context of a causal theory, we will develop a statistically valid argument that answers the research question. 
 
-Our analysis will make use the following variables:
+Our analysis will make use the following features:
 
 \textbf{Dependent Variable:} 
 
-* `installs` — The accumulated number of installs since the application was uploaded to the Google Play Store
+* `installs` — The accumulated number of installs since the application was uploaded to the Google Play Store.
 
 \textbf{Independent Variables:}
 
@@ -65,6 +67,26 @@ Our analysis will make use the following variables:
 * `category` — The category tagged for the application (i.e Lifestyle, Game)
 * `content_rating` — The official content rating given to the application (i.e Teen, Everyone, Mature 17+)
 * `type` — The price type of the application. Possible options are Free (free to download) or Paid (costs money to download).
+
+\subsection{Causal Model}
+In this section, we describe the causal model which will serve as the reference point for our analysis. We also discuss possible omitted variables and the impact they may have on our study.
+
+\subsubsection{Simple Model}
+We identify five factors that bear causal influence on the success of an application. These are (1) consumer rating, (2) production quality, (3) category, (4) age, and (5) size. Our proposed causal model is shown below.
+
+<INSERT CAUSAL MODEL PLOT>
+
+\textbf{Consumer Rating}
+\par
+Our main variable of interest is consumer rating, which we are operationalizing using the `rating` field in the data set. We hypothesize that higher application ratings  should cause greater downloads. This is because an application that has been highly rated is one that has been deemed worthwhile by other users. When new consumers decide whether or not to download an application, they will likely trust the opinions of their peers and download applications with positive reviews. Conversely, we expect applications with negative ratings to have less success, since other users have judged them poorly. There should not be causal pathways from rating to any of the other explanatory variables, since they are determined during the development phase of the application while consumer rating is decided once the application is published to the Google Play Store.
+\par
+Although we have not included it in the diagram, there is the possibility that a reverse causal path exists from application success to consumer rating. Successful applications are those that are enjoyable to a large number of consumers. Therefore, it is possible that users will rate applications with high download counts higher than applications with low download counts because they are primed to believe that such applications are better—otherwise, the successful applications would not have received so many views. Generally, we expect the reverse path to be weaker than the forward path. If ratings and downloads both have positive effects on one another, however, our models may suffer from positive feedback. We will discuss the implications of this effect in the results section.
+
+\textbf{Production Quality}
+\par
+We expect production quality to also have a causal effect on application success. Overall, we believe that applications with high production quality (such as nice graphics, fluid controls, and few bugs) should be more successful than low-quality applications since they have more appealing features. Because there is no exact measure of production quality in our data set, we will represent it using the `price` and `type` fields. This is valid assuming that price is a good proxy of production quality. Generally, paid applications should be associated with higher quality, but this may not always be the case. For instance, some free applications could have high production quality while certain paid applications could have low production quality. We recognize that this assumption is imperfect, and we will discuss the possible ramifications later in our analysis.
+\par
+We also anticipate a causal pathway from production quality to rating, for similar reasons as the pathway from quality to success. Specifically, we believe that consumers are likely to rate high-quality applications positively since those applications have more desireable features. Conversely, low-quality applications will be reviewed negatively. Again, this causal pathway may be difficult to assess if the relationship between price and quality is weaker than we assume.
 
 \subsection{Model Building}
 
