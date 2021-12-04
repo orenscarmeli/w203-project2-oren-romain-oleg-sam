@@ -67,6 +67,8 @@ Our analysis will make use the following features:
 * `category` — The category tagged for the application (i.e Lifestyle, Game)
 * `content_rating` — The official content rating given to the application (i.e Teen, Everyone, Mature 17+)
 * `type` — The price type of the application. Possible options are Free (free to download) or Paid (costs money to download).
+* `last_updated` — The date when the application was last updated.
+* `current_ver` — The current version number of the application.
 
 \subsection{Causal Model}
 In this section, we describe the causal model which will serve as the reference point for our analysis. We also discuss possible omitted variables and the impact they may have on our study.
@@ -82,11 +84,29 @@ Our main variable of interest is consumer rating, which we are operationalizing 
 \par
 Although we have not included it in the diagram, there is the possibility that a reverse causal path exists from application success to consumer rating. Successful applications are those that are enjoyable to a large number of consumers. Therefore, it is possible that users will rate applications with high download counts higher than applications with low download counts because they are primed to believe that such applications are better—otherwise, the successful applications would not have received so many views. Generally, we expect the reverse path to be weaker than the forward path. If ratings and downloads both have positive effects on one another, however, our models may suffer from positive feedback. We will discuss the implications of this effect in the results section.
 
-\textbf{Production Quality}
+\textbf{Price}
 \par
-We expect production quality to also have a causal effect on application success. Overall, we believe that applications with high production quality (such as nice graphics, fluid controls, and few bugs) should be more successful than low-quality applications since they have more appealing features. Because there is no exact measure of production quality in our data set, we will represent it using the `price` and `type` fields. This is valid assuming that price is a good proxy of production quality. Generally, paid applications should be associated with higher quality, but this may not always be the case. For instance, some free applications could have high production quality while certain paid applications could have low production quality. We recognize that this assumption is imperfect, and we will discuss the possible ramifications later in our analysis.
+We expect price (`price` and `type` in the data set) to also have a causal effect on application success. Overall, we believe that paid applications should be more successful than free applications since they have more appealing features. This may not always be the case, however. For instance, free applications could have equally impressive features as paid applications, while paid applications could be lazily trying to cash out on naive users. We recognize that this assumption is imperfect, and we will discuss possible interpretations later in our analysis.
 \par
-We also anticipate a causal pathway from production quality to rating, for similar reasons as the pathway from quality to success. Specifically, we believe that consumers are likely to rate high-quality applications positively since those applications have more desireable features. Conversely, low-quality applications will be reviewed negatively. Again, this causal pathway may be difficult to assess if the relationship between price and quality is weaker than we assume.
+We also anticipate a causal pathway from price to rating, for similar reasons as the pathway from price to success. Specifically, we believe that consumers are likely to rate paid applications positively since those applications have more desirable features, whereas free applications will be reviewed negatively. Again, this causal pathway could lean in the opposite direction if our assumption about the relationship between price and application quality proves to be incorrect.
+
+\textbf{Category}
+\par
+The category that an application belongs to is likely to affect its success. Some types of applications like games and utilities appeal to a broad audiences and are therefore more likely to find success than applications which appeal to a smaller subset of consumers. This interaction may not necessarily be so straightforward, however. If an application belongs to a popular category, then it also has to compete with other applications in the same category, which may actually be detrimental to the application. Meanwhile, applications belonging to niche categories could have a greater chance of achieving success simply due to the fact that they have fewer competitors. Globally, we expect that the most successful applications to belong to popular categories, but that moderately successful applications can be found across almost a majority of categories. 
+\par
+Application category is probably also a predictor of consumer rating. Due to stylistic and functional differences between categories, it is likely that they are reviewed against different criteria. For example, a consumer reviewing a mobile game may place emphasis on the graphics, the fluidity of the controls, and the balance of the game mechanics, among others. A lifestyle application, on the other hand, will probably be judged on completely different features, such as ease of use, relevance in every day life, and usefulness. Because the review criteria depend on the category of the application, the ratings assuredly do too. It is difficult to predict in advance what categories are positively or negatively associated with consumer ratings, but we expect categories with narrower consumer bases to receive harsher ratings. Categories that can make users feel frustrated, such as games or dating applications, may also receive more negative reviews on average.
+
+\textbf{Age}
+\par
+If we are to interpret application success in terms of the number of downloads an application accumulates, then the age of an application is necessarily an influential factor. Applications can only receive more downloads as time passes, so the longer an application remains on the Google Play Store, the more downloads it can receive. As an example of why this is important, consider two applications: one that was uploaded one year ago, and one that was uploaded one week ago. The older application receives 100 downloads a month for the whole year while the newer application receives 1000 downloads in one week. If we were to only compare the download counts (1200 to 1000), it would seem as if the older application was more successful. By bringing age into the analysis, we are able to compare the applications by download rate instead of count, thus realizing that the newer application is far more successful than its older counterpart.
+\par
+Unfortunately, our data set does not include an exact measure for age. However, the fields `current_ver` (the current version of the application) and `last_updated` (the date when the application was last updated) can serve as proxies for age. For instance, `current_ver` will generally be larger for older applications and smaller for newer applications.
+\par
+We do not expect age to have causal pathways to any of the other explanatory variables, though it might be possible to argue that price and rating are affected by age. Unless our analysis clearly demonstrates otherwise, we will assume these effects are negligible.
+
+\textbf{Size}
+\par
+We foresee two opposing sides to the relationship between application size (represented by `size` in the data set) and application success. The first is a negative effect; given the limited space available on mobile and tablet devices, users may be more likely to download smaller applications. Alternatively, application size could be an indicator of production quality, in which case users may prefer larger applications over smaller ones. We hypothesize that the first effect takes precedence.
 
 \subsection{Model Building}
 
