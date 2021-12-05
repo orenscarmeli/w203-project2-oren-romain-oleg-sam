@@ -125,7 +125,14 @@ The true causal diagram is undoubtedly more complex than the one we have outline
 
 \textbf{Seasonality}
 
-\textbf{Individual Life Circumstances}
+\subsection{Research Design}
+\par
+The goal of this analysis is to determine the effect of consumer ratings on the success of Google Play Store applications. We hypothesize that higher consumer ratings lead to greater application success. To moderate and refine our analysis, we include four additional control variables: price, category, age, and download size. Price lets us differentiate between paid and free applications, while category lets us to differentiate between different genres and target audiences. Age is included to account for the fact that applications which have been available in the store for a long time have an innate advantage over applications which were uploaded recently; with age as a variable, we can directly compare applications which were uploaded simultaneously. Finally, we include download size as it could be an indicator of production quality.
+\par
+Our data set offers a cross-sectional view of Google Play Store applications in 2019. Since not every feature maps directly to the variables we have defined in our causal framework, we make certain approximations. Success is mapped to `installs`, consumer rating is mapped to `rating`, price is mapped to `price` and `type`, category is mapped to `category`, age is mapped to `current_version` and `last_updated`, and download size is mapped to `size`. Although these mappings are sometimes imperfect, we believe they are sufficient for a meaningful analysis.
+\par
+Before we proceed with building any statistical models, we will conduct a thorough exploratory analysis of the data. We will note important patterns and trends in the data set, filter problematic entries and outliers, and justify necessary variable transformations. From there, we will build three models of increasing complexity and interpret the model coefficients, verify underlying assumptions, and discuss possible limitations. The first model will estimate how `installs` depends on `rating`, and will serve as a baseline for further analysis. The second model introduces control variables from our causal theory which we hypothesize have an effect on installations and consumer ratings: `price`, `category`, `age`, and `size`. The third and final model explores interactions between `rating` and other explanatory variables. As justification for adding specific covariates, we will provide visualizations and conduct statistical tests that demonstrate their significance.
+
 
 \subsection{Model Building}
 
