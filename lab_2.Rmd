@@ -114,6 +114,9 @@ We do not expect age to have causal pathways to any of the other explanatory var
 \par
 We foresee two opposing sides to the relationship between application size (represented by `size` in the data set) and application success. The first is a negative effect; given the limited space available on mobile and tablet devices, users may be more likely to download smaller applications. Alternatively, application size could be an indicator of production quality, in which case users may prefer larger applications over smaller ones. We hypothesize that the first effect takes precedence.
 
+\textbf{Epsilon}
+Epsilon represents variables which may influence application success but are independent from the other variables in our causal graph. These may include, for instance, geographical location, the type of device (Android, iPhone, etc.) used to download an application, or the time of day at which a download occurs. Crucially, we assume that there do not exist any directed paths from epsilon to any of the explanatory variables. This guarantees independence and is necessary for OLS regression to be valid.
+
 \subsubsection{Omitted Variables}
 The true causal diagram is undoubtedly more complex than the one we have outlined above. We have identified several omitted variables that could affect our statistical models and any conclusions we infer from them, shown in the second causal diagram below. We discuss the relationships these omitted variables have on our existing variables and the ways in which they could bias our results.
 
