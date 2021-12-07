@@ -83,20 +83,22 @@ We foresee two opposing sides to the relationship between application size and s
 Epsilon represents variables which may influence application success but are independent from the other variables in our causal graph. For instance, these could include geographical location, the type of device (Android, iPhone, etc.) used to download an application, or the time of day at which a download occurs. Crucially, we assume that there do not exist any directed paths from epsilon to any of the five explanatory variables. This guarantees independence and is necessary for ordinary least-squares regression to be valid.
 
 \subsection{Omitted Variables}
+>Lab 2 Intructions: What are the most important *omitted variables* that you were not able to measure and include in your analysis? For each variable you name, you should *reason about the direction of bias* caused by omitting this variable and whether the omission of this variable calls into question the core results you are reporting. What data could you collect that would resolve any omitted variables bias? 
+
 The true causal diagram is undoubtedly more complex than the one we have outlined above. We have identified several omitted variables that could affect our statistical models and any conclusions we infer from them, shown in the second causal diagram below. We discuss the relationships these omitted variables have with our existing variables and the ways in which they could bias our results.
 
 ![A revised version of the causal diagram including omitted variables.](./complex_model.PNG){#image2 .class width=50%}
 
 \subsubsection{Brand Awareness}
-We believe that brand awareness influences application success, rating, price, and category. Developers that have large backings and that spend money advertising their products are likely to be more successful than those who do not. Certain categories of applications, particularly those with broad audiences such as games, may be strongly affected by brand awareness. Applications released by popular brands may also have higher prices due to the power that comes with name recognition.
+We define brand awareness as the percent of a population that is aware of a brand and its product suite. We believe that brand awareness influences application success, rating, price, and category. Developers that have large backings and that spend money advertising their products are likely to be more successful than those who do not. Certain categories of applications, particularly those with broad audiences such as games, may be strongly affected by brand awareness. Applications released by popular brands may also have higher prices due to the power that comes with name recognition. 
 \par
 Brand awareness is possible to measure, but is not directly available in our data set. As noted above, we expect this omitted variable to be positively correlated with our independent and dependent variables, leading the bias away from zero and causing us to overestimate model coefficients.
 
+\subsubsection{App Rankings}
+Seasonality can influence consumer demand towards specific application categories. For example, fitness and health applications are likely to be more popular at the beginning of the year, when New Year's resolutions are at top of consumers' minds. To accurately model this variable, we would need to consider time series data rather than cross-sectional data. Although the expected impact of this omitted variable is weak, it is intimately tied to application category and could overemphasize (or underemphasize) the success of seasonally dependent applications.
+
 \subsubsection{Differences in Consumer Bases}
 This variable relates to the identity of a consumer base and how it engages with an application. Some consumers are readily targetable since applications fitting their profiles can be easily produced. However, consumers that demand specialized applications are more difficult to cater to. Some customer bases may also be substantially larger than others, acting as a massive body that funnels downloads for select applications. Additionally, application success may vary across demographics. Overall, this variable is multifaceted and difficult to measure, but may cause our conclusions about application success to be skewed in favor of large consumer bases.
-
-\subsubsection{Seasonality}
-Seasonality can influence consumer demand towards specific application categories. For example, fitness and health applications are likely to be more popular at the beginning of the year, when New Year's resolutions are at top of consumers' minds. To accurately model this variable, we would need to consider time series data rather than cross-sectional data. Although the expected impact of this omitted variable is weak, it is intimately tied to application category and could overemphasize (or underemphasize) the success of seasonally dependent applications.
 
 \section{Data}
 To answer our research question, we will leverage publicly available data about applications available on the Google Play Store. This data was randomly scraped from the Google Play Store interface and uploaded to Kaggle.com in 2019. It contains key information about sampled applications, such as downloads, file size, consumer rating, category, and price. In total, the data contains records of about 10,000 applications. 
@@ -508,9 +510,6 @@ According to the Kaggle authors, this data set was collected by randomly scrapin
 \par When assessing the normality of the error distribution, we seek to determine if the model residuals are approximately Gaussian. If so, then the sample quantiles of the residuals should closely match the theoretical quantiles of a normal distribution in a Q-Q plot. Below, we plot the Q-Q plot associated with our model. In general, the residuals seem to follow a normal distribution, as the middle quantiles match the corresponding theoretical quantiles. However, the tails of the residual distribution are fatter than expected; the first quantiles occur at smaller than expected values, and the last quantiles occur at larger than expected values. Overall, the assumption of normally distributed errors seems imperfect but reasonably justified.
 
 Because our data fails to meet the assumption of homoskedasticity, we adopt the large-sample assumptions (assumptions 1 and 2) instead. Specifically, we report robust standard errors rather than non-adjusted errors in our results.
-
-\subsection{Structural Limitations}
->Lab 2 Intructions: What are the most important *omitted variables* that you were not able to measure and include in your analysis? For each variable you name, you should *reason about the direction of bias* caused by omitting this variable and whether the omission of this variable calls into question the core results you are reporting. What data could you collect that would resolve any omitted variables bias? 
 
 \section{Conclusion}
 
