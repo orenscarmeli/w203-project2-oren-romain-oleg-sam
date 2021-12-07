@@ -142,10 +142,10 @@ After these initial operations, the cleaned data set contains 7,226 records (i.e
 #install.packages('moments')
 #install.packages("corrplot") 
 
-install.packages("DT")
-install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
-install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
-install.packages("corrplot", repos = "http://cran.us.r-project.org")
+# install.packages("DT")
+# install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
+# install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
+# install.packages("corrplot", repos = "http://cran.us.r-project.org")
 
 library(GGally)
 library(ggplot2) 
@@ -464,12 +464,26 @@ model_large  <- lm(log_installs ~ 1 + rating + log_size + log_current_version +
 # plot(model_large)
 ```
 
+
+\section{Results}
+
+>Lab 2 Intructions: You should display all of your model specifications in a regression table, using a package like [`stargazer`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf) to format your output. It should be easy for the reader to find the coefficients that represent key effects near the top of the regression table, and scan horizontally to see how they change from specification to specification. Make sure that you display the most appropriate standard errors in your table.
+In your text, comment on both *statistical significance and practical significance*. You may want to include statistical tests besides the standard t-tests for regression coefficients. Here, it is important that you make clear to your audience the practical significance of any model results. How should the product change as a result of what you have discovered? Are there limits to how much change you are proposing? What are the most important results that you have discovered, and what are the least important? 
+
+In this section, we present the results of the three OLS regression models described in the Statistical Models section.
+
+\subsection{OLS Regression Results}
+
+Presented here are the regression results of the 3 models described in the Section 7. The dependent variable for these models is the logarithmic number of application installs on the Google Play store (`log_installs`) in 2019, based on the `installs` variable. 
+
 ```{r results = "asis"}
+# this should be table comparing regressions
 stargazer(
   model_small,
   model_medium,
   model_large,
   header = FALSE,
+  title = "Table 4: Model Comparison",
   type = "latex",
   se = list(get_robust_se(model_small), get_robust_se(model_medium), 
             get_robust_se(model_large)),
@@ -478,12 +492,9 @@ stargazer(
   float = FALSE
 )
 ```
+From the regression results in Table 4., a few observations are particularly interesting. First, all coefficients are significant excluding two, `is_family_category` in Model 2, and `is_game_category` in Model 3. These variables were derived from the `category` variable in the raw dataset, which describes the category tagged for the application, i.e Lifestyle, Game, Tools, etc. Additionally, these `category` variables are also the only coefficients which alternate around 0 across the different models, adding confusion to the direction of correlation with `log_installs`. 
 
-\section{Results}
-
->Lab 2 Intructions: You should display all of your model specifications in a regression table, using a package like [`stargazer`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf) to format your output. It should be easy for the reader to find the coefficients that represent key effects near the top of the regression table, and scan horizontally to see how they change from specification to specification. Make sure that you display the most appropriate standard errors in your table.
-In your text, comment on both *statistical significance and practical significance*. You may want to include statistical tests besides the standard t-tests for regression coefficients. Here, it is important that you make clear to your audience the practical significance of any model results. How should the product change as a result of what you have discovered? Are there limits to how much change you are proposing? What are the most important results that you have discovered, and what are the least important? 
-
+Considering these factors, the research team has decided that Model 2 is the best choice for this exercise. All coefficients in Model 2 (except for `is_family_category`) have a p-value < 0.01, and although the significance of Model 3 (${r^2} = 0.250$) is slightly better than Model 2 (${r^2} = 0.247$), Model 2 is more easily explainable, and has more significant and more consistent coefficients. These models generally agree with our hypothesis regarding the direction of correlation between each coefficient and the number of application installations. Finally, it is worthwhile to note that none of these models provide what would traditionally be excepted as a significant ${r^2}$ value, but given the extreme variability between types and end-use of applications available on the Google Play Store, as well as other uncontrolled factors, we believe that this model provides a useful description of how consumer rating may impact the success of an application. 
 
 \section{Model Limitations}
 
