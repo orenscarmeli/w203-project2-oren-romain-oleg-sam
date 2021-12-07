@@ -134,6 +134,7 @@ Prior to exploring the variables built a few rules to filter clean data. Some of
 #install.packages('moments')
 #install.packages("corrplot") 
 
+#install.packages("DT")
 #install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
 #install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
 #install.packages("corrplot", repos = "http://cran.us.r-project.org") 
@@ -148,11 +149,14 @@ library(stargazer)
 library(tidyverse)
 library(data.table)
 library(corrplot)
+library(DT)
+library(knitr)
+library(kableExtra)
 
 # pull in functions
 source('./functions/get_robust_se.R')
 source('./functions/get_clean_dataset.R')
-#source('./functions/eda_calculate_stats_by_group.R')
+source('./functions/eda_calculate_stats_by_group.R')
 source('./functions/eda_build_quantile_table.R')
 
 knitr::opts_chunk$set(echo = TRUE)
@@ -272,7 +276,7 @@ numeric_cols <- c(
   'log_reviews',
   'log_installs',
   'log_size',
-  'log_price'
+  'is_free'
 )
 
 corrplot(cor(data_clean[,numeric_cols], use = "complete.obs"), 
@@ -293,6 +297,47 @@ corrplot(cor(data_clean[data_clean$reviews >= 100,numeric_cols], use = "complete
 Aside from the reviews variable, none of the numeric variables nave a strong correlation with the installs dependent variable. This does support the hypothesis of the reverse causal link between reviews and install, but also supports the notion that none of the other numeric variables (Consumer rating, price, and size) are predictive as singular inputs. Given that, we hope that the interaction among the variables in combination will have more predictive power. On a positive note, the numeric variables seem to support the statistical assumption of there not being perfect collinearity among independent variables.
 
 \subsection{Categorical Variables}
+
+To explore the categorical variables we wanted to aggregate the apps by variable sublabel and look at the frequency and mean log of install count across each. We are okay using mean as a measure of central tendency opposed to the median given the approximately normal distribution of the log of install count variable. To understand an which of the categorical columns has the largest dispersion across sublabels we calculated the a quantile table based on the `Log of Install Count (Avg)` variable. Note, we excludes sublabels with a count of less than 100 apps.
+
+``` {r plots, echo = FALSE, results = 'asis'}
+
+categorical_cols <- c(
+  'category',
+  'content_rating',
+  'current_version',
+  'android_version'
+)
+
+# perform function across all categorical columns 
+table_long_cat <-
+  rbindlist(lapply(
+    categorical_cols,
+    eda_calculate_stats_by_group,
+    dt = as.data.table(data_clean)
+  ))
+table_quantile_cat <-
+  rbindlist(
+    lapply(
+      categorical_cols,
+      eda_calculate_stats_by_group,
+      dt = as.data.table(data_clean),
+      quantile_table = TRUE
+    )
+  )
+
+kable(table_quantile_cat, caption = 'Quantile Summary Table', digits = 4) %>%
+  kable_styling(latex_options = "HOLD_position")
+
+kable(table_long_cat[Variable == "category"], caption = 'SubLabel Summary Table (Category Variable)', digits = 4) %>%
+  kable_styling(latex_options = "HOLD_position")
+
+kable(table_long_cat[Variable == "content_rating"], caption = 'SubLabel Summary Table (Content Rating Variable)', digits = 4) %>%
+  kable_styling(latex_options = "HOLD_position")
+
+```
+
+Based on the quantile summary table, all 4 categorical variable have at least a 20% dispersion across the minimum and maximum sublabels. This indicates that they might all have some predictive power and be worth exploring as inputs. Notably, the category column seems to have the largest dispersion across groups indicating it may be the most impactful. We've omitted the tables for the `current_version` and `android_version` as they are less readable. Overall, this supports our hypothesis of testing these as inputs. We also want to play around with creating binned/binary variables from them to isolate high frequency sublabels or those with high average log install count.
 
 \section{Statistical Models}
 
