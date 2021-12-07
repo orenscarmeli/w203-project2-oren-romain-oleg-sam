@@ -87,14 +87,16 @@ The true causal diagram is undoubtedly more complex than the one we have outline
 
 ![A revised version of the causal diagram including omitted variables.](./complex_model.PNG){#image2 .class width=50%}
 
-\textbf{Brand Awareness}
-We believe that a lift in brand awareness leads to an increase in install count. We'd expect this is largely generated accumulated through marketing campaigns across varying channels. Many applications likely have higher install counts from being a large player within an industry as well as spending money to direct prospects to their digital product and/or directly to the app store. This would be possible to measure, but is not available within this dataset. With respect to our independent variables, we'd most expect this to be correlated with certain sublabels within the category variable. As such, for some sublabels this would cause a omitted variable bias of away from zero as the included variable may be more dramatic than otherwise would be.
+\subsubsection{Brand Awareness}
+We believe that brand awareness influences application success, rating, price, and category. Developers that have large backings and that spend money advertising their products are likely to be more successful than those who do not. Certain categories of applications, particularly those with broad audiences such as games, may be strongly affected by brand awareness. Applications released by popular brands may also have higher prices due to the power that comes with name recognition.
+\par
+Brand awareness is possible to measure, but is not directly available in our data set. As noted above, we expect this omitted variable to be positively correlated with our independent and dependent variables, leading the bias away from zero and causing us to overestimate model coefficients.
 
-\textbf{Differences in Consumer Bases}
-We think of this concept in terms of how the customer base engages with a product as well as who the customer base is. For example, some products are more easily translated into the size and interactive capabilities of a smartphone; likely incentivizing downloads for those types of apps. Some customer bases may also be substantially bigger acting as a massive customer funnel into accumulating downloads. Note, customer size is likely correlated with brand awareness, but we don't expect there to be perfect collinearity among them. Additionally, there may be demographic differences that lend themselves more to using mobile applications. In aggregate, we see this is a very vague bucketed concept that likely has interactions across both the dependent and indendent variables within our modeled causal graph. 
+\subsubsection{Differences in Consumer Bases}
+This variable relates to the identity of a consumer base and how it engages with an application. Some consumers are readily targetable since applications fitting their profiles can be easily produced. However, consumers that demand specialized applications are more difficult to cater to. Some customer bases may also be substantially larger than others, acting as a massive body that funnels downloads for select applications. Additionally, application success may vary across demographics. Overall, this variable is multifaceted and difficult to measure, but may cause our conclusions about application success to be skewed in favor of large consumer bases.
 
-\textbf{Seasonality}
-Seasonality can influence consumer demand towards specific app categories. For example, health applications are likely more popular during the beginning of the year when new year resolutions are top of mind. We'd expect this to be largely related to the category of the application and likely a factor that does not fit well within this research design. We believe it would need to be modeled and descibed through time series data whereas our dataset is based on a snapshot in time.
+\subsubsection{Seasonality}
+Seasonality can influence consumer demand towards specific application categories. For example, fitness and health applications are likely to be more popular at the beginning of the year, when New Year's resolutions are at top of consumers' minds. To accurately model this variable, we would need to consider time series data rather than cross-sectional data. Although the expected impact of this omitted variable is weak, it is intimately tied to application category and could overemphasize (or underemphasize) the success of seasonally dependent applications.
 
 \section{Data}
 To answer our research question, we will leverage publicly available data about applications available on the Google Play Store. This data was randomly scraped from the Google Play Store interface and uploaded to Kaggle.com in 2019. It contains key information about sampled applications, such as downloads, file size, consumer rating, category, and price. In total, the data contains records of about 10,000 applications. 
@@ -114,7 +116,7 @@ In our case, the dependent variable is application success and the independent v
 * Consumer rating — `rating` (the average consumer rating for the application out of 5)
 * Price — `price` (the price of the application) and `type` (the price type of the application, free or paid)
 * Category — `category` (the category tagged for the application, i.e Lifestyle, Game) and `content_rating` (the official content rating given to the application, i.e Teen, Everyone, Mature 17+)
-`size` — The memory space occupied by the application.
+* `size` — The memory space occupied by the application.
 * Age — `current_version` (the current version number of the application) and `last_updated` (the date when the application was last updated)
 * Size — `size` (the download size of the application, in units of MB)
 
@@ -128,19 +130,20 @@ Before we proceed with building any statistical models, we will conduct a thorou
 
 \section{Exploratory Data Analysis}
 
-Prior to exploring the variables, we built a few rules to filter clean data based on some logical conclusions. Specifically it included; removing duplicates, removing records with a null review count, and removing records with a consumer rating value of larger than 5. Our research question focuses on consumer rating, thus we elected to only keep records with a valid value for it. We intuitively do not believe the consumer rating score is representative if there are less than 100 reviews, but, we wanted to first understand the distribution before making a potentially dramatic reduction in sample size of the data set. After performing these initial operations, the cleaned data set includes 7,226 rows (i.e applications) with 24 metadata columns (11 of which we built). We split up the exploration into 2 sections based on variable type; numeric versus categorical. 
+Prior to exploring the data, we create a few rules to filter and clean records based on logical conditions. This procedure involves removing duplicate records, removing records with null review counts, and removing records with consumer ratings greater than 5. Since our research question focuses on consumer rating, we elect to only keep records with valid values for that field. Intuitively, we do not believe that consumer rating is a suitable predictor if there are fewer than 100 ratings in total, so we only keep applications that exceed this amount. Although this step removes almost 25% of the data, it is acceptable given that the initial data set contains approximately 10,000 records. 
+
 \par
-In summary, the EDA 
+After these initial operations, the cleaned data set contains 7,226 records (i.e distinct applications) with 24 metadata columns, 11 of which we built. We split up the exploration into two sections based on the type of the variable, numeric versus categorical. 
 
 ```{r setup environment, echo = FALSE}
 #install.packages('GGally')
 #install.packages('moments')
 #install.packages("corrplot") 
 
-#install.packages("DT")
-#install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
-#install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
-#install.packages("corrplot", repos = "http://cran.us.r-project.org") 
+install.packages("DT")
+install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
+install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
+install.packages("corrplot", repos = "http://cran.us.r-project.org")
 
 library(GGally)
 library(ggplot2) 
@@ -155,6 +158,7 @@ library(corrplot)
 library(DT)
 library(knitr)
 library(kableExtra)
+library(latex2exp)
 
 # pull in functions
 source('./functions/get_robust_se.R')
@@ -174,109 +178,194 @@ data_clean <- get_clean_dataset(minimum_review_count=0)
 
 \subsection{Numeric Variables}
 
-For the numeric variables, we wanted to understand the distribution of each as well as examine the correlations/covariances among them. The distribution is used to measure the quality of the data, understand outliers, and evaluate the need for variable transformations. Understanding correlations help us by highlighting variables that may strongly explain the variance of our dependent variable as well as quantifying the collinearity among our independent variables (which we want to avoid). When evaluating the correlation coefficients we used the rule of thumbs where >= 0.9 is great and >= 0.6 is okay. 
+For the numeric variables, we wanted to understand each underlying distribution as well as examine the correlations and covariances among them. The distributions are used to measure the quality of the data, identify outliers, and evaluate the need for variable transformations. In addition, understanding the correlations between variables helps us to highlight those that might explain the variance of our dependent variable, and to quantify the level of collinearity between different features.
 
-\subsubsection{Distribution of Variables}
+\subsubsection{Distributions}
 
-``` {r distribution summary, echo = FALSE}
+``` {r distribution summary, echo = FALSE, results = "asis"}
 numeric_cols <- c(
   'installs',
   'size',
   'reviews',
   'rating',
-  'price'
+  'price',
+  'current_version'
 )
 
-summary(data_clean[,numeric_cols])
+stargazer(
+  data_clean[, numeric_cols],
+  column.sep.width = "3pt",
+  font.size = "small",
+  header = FALSE
+)
 ```
-The column values all seem valid given there were no negative values (i.e negative review count) or a number near infinity. Notably, none contained any zero values which would be an important note if we'd want to take the log transformation of a variable.
-\par
-Based on the difference across medians and means, size and rating count appear to have more normal distributions while the others look more conducive to having a long tail in either end of their spectrum. Notably, we expect there to be a reverse causal link between install count and review count (i.e high install count leads to review count). Based on this we elected to not include review count as an independent variable. Based on the distribution our initially idea of only keeping applications with at least 100 reviews seems sensible as it will only remove 25% of the data which is okay given the initial size of over 7k apps. 
 
-``` {r distribution plots (installs), echo = FALSE}
+After the cleaning step, all feature values appear valid; there are no negative values, null values, or values close to infinity. Notably, only two fields contain zero values, `price` and `current_version`. This will be important when deciding whether or not to apply logarithmic transformations to any of the variables. We also note that we have treated `current_version` (the version of the application) as a metric variable. Although this is technically incorrect, we feel it is justified given this feature is ordinal in scale and has generally consistent intervals.
+
+\par
+From the differences between their medians and means, `size` and `reviews` appear to have approximately normal distributions, while the others have strong right or left skews. Since we expect a reverse causal pathway to exist from `installs` to `reviews` (i.e. high install counts lead to high review counts), we do not include `reviews` as a predictor in our analysis. 
+
+**Application Success**
+
+```{r echo = FALSE}
+max_installs  <- max(data_clean$installs, na.rm = TRUE)
+med_installs  <- median(data_clean$installs, na.rm = TRUE)
+skew_installs <- skewness(data_clean$installs, na.rm = TRUE)
+```
+
+\par
+Application success is measured using the `installs` feature, which represents the the raw download count of application. It is important to note here that `installs` is a binned feature. The bins start at 1 and scale logarithmically; 1+, 5+, 10+, 100+, 500+, 1000+, etc. For example, a value of 100+ means that an application has between 100 and 499 downloads. In the cleaning step, we removed the + sign and converted `installs` to a metric variable. This conversion is valid because the variable is ordinal and there is a measurable distance between bins. Given that this distance scales logarithmically, we can also claim that it is consistent between bins. Although there is some error in precision due to the fact that binning obscures the true value, we believe that `installs` can be treated as a metric variable in practice. The raw distribution has a strong right skew of $\tilde{\mu}_3 = `r signif(skew_installs, 3)`$; the maximum is `r signif(max_installs, 3)` and the median is `r signif(med_installs, 3)`. Unsurprisingly, applying a logarithmic transformation causes the resulting distribution to resemble a normal distribution, which makes it an appropriate transformation for future modeling.
+
+``` {r distribution plots (installs), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 ggplot(data = data_clean, aes(x = installs)) +
   geom_histogram() + 
+  geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$installs)) +
   xlab("Installs") +
   ylab("Frequency") +
-  ggtitle("Distribution of Installs")
+  ggtitle("Raw distribution of application install counts")
 
 ggplot(data = data_clean, aes(x = log_installs)) +
   geom_histogram() +
+  geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$log_installs)) +
-  xlab("Log of Installs") +
+  xlab(TeX("$\\log_{10}(installs)$")) +
   ylab("Frequency") +
-  ggtitle("Distribution of Log of Installs")
+  ggtitle("Log-distribution of application install counts")
 ```
 
-**Application success — `installs`**: Important to note is the installs count variable is binned. The bins start at one and scale logarithmically; 1+, 5+, 10+, 100+, 500+, 1000+, etc (i.e 100+ means there are between 100 and 499 installs for that app). We simply removed the `+` and made treated it as a metric variable. We know the variable is ordinal as there is a clear ordering to it. We concluded it is metric because there is a measurable distance between groups. And, given the distance between groups scales logarithmically, we can claim there is a constant distance across groups. There is some error with precision as the bin hides the true value, but we believe this variable can be considered metric in practice. There is a heavy tail towards the end of the spectrum as the maximum is 1 billion with a median of 100,000. Unsurprisingly, taking a log of the variable allows resemble a normal distribution making this an appropriate variable transformation for the model.
+**Consumer rating** 
 
-``` {r distribution plots (rating), echo = FALSE}
+```{r echo = FALSE}
+max_rating  <- max(data_clean$rating, na.rm = TRUE)
+med_rating  <- median(data_clean$rating, na.rm = TRUE)
+skew_rating <- skewness(data_clean$rating, na.rm = TRUE)
+```
+
+\par
+Consumer rating is measured using the `rating` feature, which represents the average consumer rating of an application. This feature appears to have a distribution that is approximately normal, but that is positively skewed towards larger values ($\tilde{\mu}_3 = `r signif(skew_rating, 3)`$). Average ratings range between 0 and 5, with a median of `r signif(med_rating, 3)`.
+
+``` {r distribution plots (rating), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 ggplot(data = data_clean, aes(x = rating)) +
   geom_histogram() + 
+  geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$rating)) +
-  xlab("Consumer Rating") +
+  xlab("Average consumer rating") +
   ylab("Frequency") +
-  ggtitle("Distribution of Consumer Rating")
+  ggtitle("Raw distribution of average consumer rating")
 
 ggplot(data = data_clean, aes(x = log_rating)) +
   geom_histogram() +
+  geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$log_rating)) +
-  xlab("Log of Consumer Rating") +
+  xlab(TeX("$\\log_{10}(rating)$")) +
   ylab("Frequency") +
-  ggtitle("Distribution of Log of Consumer Rating")
+  ggtitle("Log-distribution average consumer rating")
 ```
 
-**Consumer rating — `rating`**: The rating variable appears to have a distribution that appears approximately normal that is skewed towards the right of the valid values between 0 and 5 with a median of 4.3. 
+**Size**
 
-``` {r distribution plots (size), echo = FALSE}
+```{r echo = FALSE}
+max_size  <- max(data_clean$size, na.rm = TRUE)
+med_size  <- median(data_clean$size, na.rm = TRUE)
+skew_size <- skewness(data_clean$size, na.rm = TRUE)
+```
+
+\par
+Download size is measured using the `size` feature. `size` has a distribution that is slightly closer to normal than `installs`, though it still has a noticeable right-leaning tail ($\tilde{\mu}_3 = `r signif(skew_size, 3)`$). The maximum size in the data set is `r signif(max_rating, 3)`, and the median is `r signif(med_rating, 3)`. Applying a logarithmic transformation shifts the distribution closer to normality, leading us to conclude that it is an appropriate transformation. Although the log-distribution fluctuates near the middle, we still find it more appropriate than the raw distribution. 
+
+``` {r distribution plots (size), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 ggplot(data = data_clean, aes(x = size)) +
   geom_histogram() + 
+  geom_density(aes(y=0.5*..count..)) +  
   geom_vline(xintercept = median(data_clean$size)) +
-  xlab("Size (in MB)") +
+  xlab("Download size (MB)") +
   ylab("Frequency") +
-  ggtitle("Distribution of Size (in MB)")
+  ggtitle("Raw distribution of application download size")
 
 ggplot(data = data_clean, aes(x = log_size)) +
   geom_histogram() +
+  geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$log_size)) +
-  xlab("Log of Size (in MB)") +
+  xlab(TeX("$\\log_{10}(size)$")) +
   ylab("Frequency") +
-  ggtitle("Distribution of Log of Size (in MB)")
+  ggtitle("Log-distribution of application download size")
 ```
 
-**Size — `size`**: The size variable had slightly more normal distribution than installs count, but still had a heavy tail towards the end of its spectrum. The log of size more closely resembles a normal distribution leading us to believe it will be an appropriate variable transformation. Note, the log(size) value does not have a very pronounced high density point near the mean/median, but we believe it still is appropriate when comparing it to the distribution of the non-logged version. 
+**Price**
 
-``` {r distribution plots (price), echo = FALSE}
+```{r echo = FALSE}
+max_price  <- max(data_clean$price, na.rm = TRUE)
+med_price  <- median(data_clean$price, na.rm = TRUE)
+skew_price <- skewness(data_clean$price, na.rm = TRUE)
+```
+
+\par
+Application price is measured using the `price` feature. In total, `r round(mean(data_clean$is_free), 2) * 100.0`% of applications in the data set are free to download; the median price is `r signif(med_price, 3)`, and the skew is $\tilde{\mu}_3 = `r signif(skew_price, 3)`$. As a result, we believe that neither the raw distribution nor the log-distribution of `price` are desirable for modeling, as they deviate too far from normality. Instead, we will transform `price` into an indicator variable that takes value 1 for paid applications and 0 for free applications.
+
+``` {r distribution plots (price), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 
 ggplot(data = data_clean, aes(x = price)) +
   geom_histogram() + 
+  geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$price)) +
-  xlab("Price") +
+  xlab("Price ($)") +
   ylab("Frequency") +
-  ggtitle("Distribution of Price")
+  ggtitle("Raw distribution of application prices")
 
 ggplot(data = data_clean, aes(x = log_price)) +
   geom_histogram() +
+  geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$log_price)) +
-  xlab("Log of Price") +
+  xlab(TeX("$\\log_{10}(price)$")) +
   ylab("Frequency") +
-  ggtitle("Distribution of Log of Price")
-
+  ggtitle("Log-distribution of application prices")
 ```
 
-**Price — `price`**: `r round(mean(data_clean$is_free),2)*100`% of the applications are free. This is why believe both distributions of price and log(price) are undesirable where neither mimic a normal distribution at all. This finding lead to us exploring the concept of a binary metric variable where 1 means it is paid and 0 means it is not paid. 
+**Age**
 
-\subsubsection{Correlation of Variables}
+```{r echo = FALSE}
+max_current_version  <- max(data_clean$current_version, na.rm = TRUE)
+med_current_version  <- median(data_clean$current_version, na.rm = TRUE)
+skew_current_version <- skewness(data_clean$current_version, na.rm = TRUE)
+```
 
-``` {r correlation plots, echo = FALSE}
+\par
+The age of an application is measured using the proxy features `current_version` and `last_updated`. We notice that that `current_version` is skewed right ($\tilde{\mu}_3 = `r signif(skew_current_version, 3)`$), with a maximum value of `r signif(max_current_version, 3)` and a median of `r signif(med_current_version, 3)`. Due to the strong positive skew, we apply a logarithmic transformation before the modeling phase.
+
+``` {r distribution plots (version), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
+
+ggplot(data = data_clean, aes(x = price)) +
+  geom_histogram() + 
+  geom_density(aes(y=0.5*..count..)) + 
+  geom_vline(xintercept = median(data_clean$current_version)) +
+  xlab("Price ($)") +
+  ylab("Frequency") +
+  ggtitle("Raw distribution of application versions")
+
+ggplot(data = data_clean, aes(x = log_price)) +
+  geom_histogram() +
+  geom_density(aes(y=0.5*..count..)) + 
+  geom_vline(xintercept = median(data_clean$current_version)) +
+  xlab(TeX("$\\log_{10}(current\\_version)$")) +
+  ylab("Frequency") +
+  ggtitle("Log-distribution of application versions")
+```
+
+
+\subsubsection{Correlations}
+
+Aside from `log_reviews`, none of the other numeric features have a strong correlation with `installs`. The high correlation coefficient between `log_reviews` and `log_installs` supports our hypothesis that there is a causal path from `installs` to `reviews`; indeed, consumers will generally only review applications once they have downloaded them. Since one of our goals is to build an efficient model, we would ideally like to see stronger correlations between the independent variables and the dependent variable. There may be latent predictive power in the interactions between variables, however. Notably, we observe that the correlation coefficient between `rating` and `log_installs` increases by a factor of 2 when we exclude applications with fewer than 100 reviews. This agrees with our assumption that consumer rating bears causal influence on application success, and motivates our choice to remove applications with review counts of less than 100. Lastly, the correlation plots do not indicate high levels of collinearity among the numeric variables. 
+
+``` {r correlation plots, figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 numeric_cols <- c(
-  'reviews',
-  'rating',
-  'log_reviews',
   'log_installs',
+  'log_reviews',
+  'rating',
   'log_size',
-  'is_free'
+  'is_free',
+  'log_current_version',
+  'log_last_updated'
 )
 
 corrplot(cor(data_clean[,numeric_cols], use = "complete.obs"), 
@@ -289,16 +378,15 @@ corrplot(cor(data_clean[,numeric_cols], use = "complete.obs"),
 #         mar=c(0,0,1,0), # http://stackoverflow.com/a/14754408/54964
 #         title = "Applications With at least 100 reviews (5th PCTL)")
 
-corrplot(cor(data_clean[data_clean$reviews >= 100,numeric_cols], use = "complete.obs"), 
+corrplot(cor(data_clean[data_clean$reviews >= 100, numeric_cols], use = "complete.obs"), 
          method = 'number',
          mar=c(0,0,1,0), # http://stackoverflow.com/a/14754408/54964
          title = "Applications With at least 100 reviews (25th PCTL)")
 ```
-Aside from the reviews variable, none of the other numeric variables have a strong correlation with install count. The high coefficient of 0.9 between log_reviews and log_installs supports the hypothesis of a reverse causal link between reviews and installs. With the goal of building an efficient model, we'd like to see stronger correlation coefficients between the variables, but there may be predictive power in the interaction between them. Of note, we do see the coefficient between rating and log_installs increase by 2x when we exclude apps with less than 100 reviews. This agrees with our hypothesis that rating does have an influence on install count and that the rating value is more valid as it accrues at least 100 reviews. Lastly, the numeric variables seem to support the statistical assumption of there not being perfect collinearity among independent variables. 
 
 \subsection{Categorical Variables}
 
-To explore the categorical variables we wanted to aggregate the apps by variable sublabel and look at the frequency and mean log of install count across each. We are okay using mean as a measure of central tendency opposed to the median given the approximately normal distribution of the log of install count variable. To understand an which of the categorical columns has the largest dispersion across sublabels we calculated the a quantile table based on the `Log of Install Count (Avg)` variable. Note, we excludes sublabels with a count of less than 100 apps.
+For the categorical features, we want to aggregate the frequency and mean of `log_install` by feature sublabel. We use the mean as a measure of central tendency rather than the median given the approximately normal distribution of the `log_installs`. To identify which categorical features have the largest dispersion across sublabels, we calculate quantile tables using the average `log_installs` counts. We choose to exclude sublabels with fewer than 100 applications.
 
 ``` {r plots, echo = FALSE, results = 'asis'}
 
@@ -326,18 +414,21 @@ table_quantile_cat <-
     )
   )
 
-kable(table_quantile_cat, caption = 'Quantile Summary Table', digits = 4) %>%
+kable(table_quantile_cat, caption = 'Quantile summary table', digits = 4, booktabs = T) %>%
   kable_styling(latex_options = "HOLD_position")
 
-kable(table_long_cat[Variable == "category"], caption = 'SubLabel Summary Table (Category Variable)', digits = 4) %>%
+kable(table_long_cat[Variable == "category"], caption = 'Sublabel summary table, application category', digits = 4, booktabs = T) %>%
   kable_styling(latex_options = "HOLD_position")
 
-kable(table_long_cat[Variable == "content_rating"], caption = 'SubLabel Summary Table (Content Rating Variable)', digits = 4) %>%
+kable(table_long_cat[Variable == "content_rating"], caption = 'Sublabel summary table, content rating', digits = 4, booktabs = T) %>%
   kable_styling(latex_options = "HOLD_position")
 
 ```
 
-Based on the quantile summary table, all 4 categorical variable have at least a 20% dispersion across the minimum and maximum sublabels. This indicates that they might all have some predictive power and be worth exploring as inputs. Notably, the category column seems to have the largest dispersion across groups indicating it may be the most impactful. We've omitted the tables for the `current_version` and `android_version` as they are less readable. Overall, this supports our hypothesis of testing these as inputs. We also want to play around with creating binned/binary variables from them to isolate high frequency sublabels or those with high average log install count.
+From the quantile summary table, all four categorical features have at least a 20% dispersion across the most frequent and least frequent sublabels. This indicates that these features might have some predictive power as inputs to a regression model. Notably, the `category` column seems to have the largest dispersion across groups, implying that it could be greatly impactful. We have omitted the table `android_version` as it is difficult to interpret. 
+
+\par
+Overall, this analysis motivates using `category` and `content_rating` as explanatory variables in regression models. To ease interpretability and limit the number of variables in our models, we will use binned and binary versions of these variables, isolating the sublabels with the highest frequencies.
 
 \section{Statistical Models}
 
@@ -426,4 +517,3 @@ Because our data fails to meet the assumption of homoskedasticity, we adopt the 
 >Lab 2 Intructions: Make sure that you end your report with a discussion that distills key insights from your estimates and addresses your research question
 
 \section{Appendix}
-
