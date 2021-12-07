@@ -111,6 +111,7 @@ get_clean_dataset <- function(minimum_review_count = 100) {
   data_clean$log_current_version <- log10(data_clean$current_ver + 1)
   data_clean$log_last_updated    <- log10(data_clean$last_updated + 1)
   data_clean$log_reviews         <- log10(data_clean$reviews)
+  data_clean$log_rating          <- log10(data_clean$rating)
   
   return(data_clean)
 }
