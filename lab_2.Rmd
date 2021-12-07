@@ -93,7 +93,6 @@ The true causal diagram is undoubtedly more complex than the one we have outline
 
 \textbf{Seasonality}
 
-
 \section{Data}
 To answer our research question, we will leverage publicly available data about applications available on the Google Play Store. This data was randomly scraped from the Google Play Store interface and uploaded to Kaggle.com in 2019. It contains key information about sampled applications, such as downloads, file size, consumer rating, category, and price. In total, the data contains records of about 10,000 applications. 
 
@@ -116,7 +115,6 @@ In our case, the dependent variable is application success and the independent v
 * Age — `current_version` (the current version number of the application) and `last_updated` (the date when the application was last updated)
 * Size — `size` (the download size of the application, in units of MB)
 
-
 \section{Research Design}
 \par
 The goal of this analysis is to determine the effect of consumer ratings on the success of Google Play Store applications. We hypothesize that higher consumer ratings lead to greater application success. To moderate and refine our analysis, we include four additional control variables: price, category, age, and download size. Price lets us differentiate between paid and free applications, while category lets us differentiate between different genres and target audiences. Age is included to account for the fact that applications which have been available in the store for a long time have an innate advantage over applications which were uploaded recently; with age as a variable, we can directly compare applications which were uploaded simultaneously. Finally, we include download size as it could be an indicator of production quality.
@@ -127,7 +125,9 @@ Before we proceed with building any statistical models, we will conduct a thorou
 
 \section{Exploratory Data Analysis}
 
-Prior to exploring the variables built a few rules to filter clean data. Some of which included removing duplicates, records with a null review count (`reviews`), or records with a consumer rating (`rating`) value of larger than 5. Our research question focuses on consumer rating, thus only kept records with a corresponding valid value for it. We intuitively do not believe the consumer rating score is representative if there are less than 100 reviews. But, we wanted to first understand the distribution before making a dramatic reduction in sample size of the data set. The cleaned data set includes 7,226 rows (i.e applications) with 24 metadata columns (11 of which we built). We split up the exploration into 2 sections based on variable type; numeric versus categorical. 
+Prior to exploring the variables, we built a few rules to filter clean data based on some logical conclusions. Specifically it included; removing duplicates, removing records with a null review count, and removing records with a consumer rating value of larger than 5. Our research question focuses on consumer rating, thus we elected to only keep records with a valid value for it. We intuitively do not believe the consumer rating score is representative if there are less than 100 reviews, but, we wanted to first understand the distribution before making a potentially dramatic reduction in sample size of the data set. After performing these initial operations, the cleaned data set includes 7,226 rows (i.e applications) with 24 metadata columns (11 of which we built). We split up the exploration into 2 sections based on variable type; numeric versus categorical. 
+\par
+In summary, the EDA 
 
 ```{r setup environment, echo = FALSE}
 #install.packages('GGally')
@@ -171,7 +171,7 @@ data_clean <- get_clean_dataset(minimum_review_count=0)
 
 \subsection{Numeric Variables}
 
-For the numeric variables, we wanted to understand the distribution of each as well as examine the correlations/covariances among them. The distribution is used to measure the quality of the data, understand outliers, and evaluate the need for variable transformations. Understanding correlations help in highlight variables that may help explain the variance of our dependent variable as well as determine collinearity among our independent variables, which we want to avoid. When evaluating the correlation coefficients we used the rule of thumbs where >= 0.9 is great and >= 0.6 is okay. 
+For the numeric variables, we wanted to understand the distribution of each as well as examine the correlations/covariances among them. The distribution is used to measure the quality of the data, understand outliers, and evaluate the need for variable transformations. Understanding correlations help us by highlighting variables that may strongly explain the variance of our dependent variable as well as quantifying the collinearity among our independent variables (which we want to avoid). When evaluating the correlation coefficients we used the rule of thumbs where >= 0.9 is great and >= 0.6 is okay. 
 
 \subsubsection{Distribution of Variables}
 
@@ -188,28 +188,25 @@ summary(data_clean[,numeric_cols])
 ```
 The column values all seem valid given there were no negative values (i.e negative review count) or a number near infinity. Notably, none contained any zero values which would be an important note if we'd want to take the log transformation of a variable.
 \par
-
-Based on the difference across medians and means, size and rating count appear to have more normal distributions while the others look more conducive to having a long tail in either end of their spectrum. Notably, we expect there to be a reverse causal link between install count and review count (i.e high install count leads to review count). Based on this we elected to not include review count as an independent variable. Based on the distribution our initialy idea of only keeping applications with at least 100 reviews seems sensible as it will only remove 25% of the data which is okay given the initial size of over 7k apps. 
-\par
-
+Based on the difference across medians and means, size and rating count appear to have more normal distributions while the others look more conducive to having a long tail in either end of their spectrum. Notably, we expect there to be a reverse causal link between install count and review count (i.e high install count leads to review count). Based on this we elected to not include review count as an independent variable. Based on the distribution our initially idea of only keeping applications with at least 100 reviews seems sensible as it will only remove 25% of the data which is okay given the initial size of over 7k apps. 
 
 ``` {r distribution plots (installs), echo = FALSE}
 ggplot(data = data_clean, aes(x = installs)) +
   geom_histogram() + 
   geom_vline(xintercept = median(data_clean$installs)) +
-  xlab("Install Count") +
+  xlab("Installs") +
   ylab("Frequency") +
-  ggtitle("Distribution of Install Count")
+  ggtitle("Distribution of Installs")
 
 ggplot(data = data_clean, aes(x = log_installs)) +
   geom_histogram() +
   geom_vline(xintercept = median(data_clean$log_installs)) +
-  xlab("Log of Install Count") +
+  xlab("Log of Installs") +
   ylab("Frequency") +
-  ggtitle("Distribution of Log of Install Count")
+  ggtitle("Distribution of Log of Installs")
 ```
 
-**Application success**: Important to note is the installs count variable is binned. The bins start at one and scale logarithmically; 1+, 5+, 10+, 100+, 500+, 1000+, etc (i.e 100+ means there are between 100 and 499 installs for that app). We simply removed the `+` and made treated it as a metric variable. We know the variable is ordinal as there is a clear ordering to it. We concluded it is metric because there is a measurable distance between groups. And, given the distance between groups scales logarithmically, we can claim there is a constant distance across groups. There is some error with precision as the bin hides the true value, but we believe this variable can be considered metric in practice. There is a heavy tail towards the end of the spectrum as the maximum is 1 billion with a median of 100,000. Unsurprisingly, taking a log of the variable allows resemble a normal distribution making this an appropriate variable transformation for the model.
+**Application success — `installs`**: Important to note is the installs count variable is binned. The bins start at one and scale logarithmically; 1+, 5+, 10+, 100+, 500+, 1000+, etc (i.e 100+ means there are between 100 and 499 installs for that app). We simply removed the `+` and made treated it as a metric variable. We know the variable is ordinal as there is a clear ordering to it. We concluded it is metric because there is a measurable distance between groups. And, given the distance between groups scales logarithmically, we can claim there is a constant distance across groups. There is some error with precision as the bin hides the true value, but we believe this variable can be considered metric in practice. There is a heavy tail towards the end of the spectrum as the maximum is 1 billion with a median of 100,000. Unsurprisingly, taking a log of the variable allows resemble a normal distribution making this an appropriate variable transformation for the model.
 
 ``` {r distribution plots (rating), echo = FALSE}
 ggplot(data = data_clean, aes(x = rating)) +
@@ -227,7 +224,7 @@ ggplot(data = data_clean, aes(x = log_rating)) +
   ggtitle("Distribution of Log of Consumer Rating")
 ```
 
-**Consumer rating**: The rating variable appears to have a distribution that appears approximately normal that is skewed towards the right of the valid values between 0 and 5 with a median of 4.3. 
+**Consumer rating — `rating`**: The rating variable appears to have a distribution that appears approximately normal that is skewed towards the right of the valid values between 0 and 5 with a median of 4.3. 
 
 ``` {r distribution plots (size), echo = FALSE}
 ggplot(data = data_clean, aes(x = size)) +
@@ -240,12 +237,12 @@ ggplot(data = data_clean, aes(x = size)) +
 ggplot(data = data_clean, aes(x = log_size)) +
   geom_histogram() +
   geom_vline(xintercept = median(data_clean$log_size)) +
-  xlab("Log of Size (in mb)") +
+  xlab("Log of Size (in MB)") +
   ylab("Frequency") +
-  ggtitle("Distribution of Log of Size (in mb)")
+  ggtitle("Distribution of Log of Size (in MB)")
 ```
 
-**Size**: The size variable had slightly more normal distribution than installs count, but still had a heavy tail towards the end of its spectrum. The log of size more closely resembles a normal distribution leading us to believe it will be an appropriate variable transformation. Note, the log(size) value does not have a very pronounced high density point near the mean/median, but we believe it still is appropriate when comparing it to the distribution of the non-logged version. 
+**Size — `size`**: The size variable had slightly more normal distribution than installs count, but still had a heavy tail towards the end of its spectrum. The log of size more closely resembles a normal distribution leading us to believe it will be an appropriate variable transformation. Note, the log(size) value does not have a very pronounced high density point near the mean/median, but we believe it still is appropriate when comparing it to the distribution of the non-logged version. 
 
 ``` {r distribution plots (price), echo = FALSE}
 
@@ -265,7 +262,7 @@ ggplot(data = data_clean, aes(x = log_price)) +
 
 ```
 
-**Price**: `r round(mean(data_clean$is_free),2)*100`% of the applications are free. This is why believe both distributions of price and log(price) are undesirable where neither mimic a normal distribution at all. This finding lead to us exploring the concept of a binary metric variable where 1 means it is paid and 0 means it is not paid. 
+**Price — `price`**: `r round(mean(data_clean$is_free),2)*100`% of the applications are free. This is why believe both distributions of price and log(price) are undesirable where neither mimic a normal distribution at all. This finding lead to us exploring the concept of a binary metric variable where 1 means it is paid and 0 means it is not paid. 
 
 \subsubsection{Correlation of Variables}
 
@@ -294,7 +291,7 @@ corrplot(cor(data_clean[data_clean$reviews >= 100,numeric_cols], use = "complete
          mar=c(0,0,1,0), # http://stackoverflow.com/a/14754408/54964
          title = "Applications With at least 100 reviews (25th PCTL)")
 ```
-Aside from the reviews variable, none of the numeric variables nave a strong correlation with the installs dependent variable. This does support the hypothesis of the reverse causal link between reviews and install, but also supports the notion that none of the other numeric variables (Consumer rating, price, and size) are predictive as singular inputs. Given that, we hope that the interaction among the variables in combination will have more predictive power. On a positive note, the numeric variables seem to support the statistical assumption of there not being perfect collinearity among independent variables.
+Aside from the reviews variable, none of the other numeric variables have a strong correlation with install count. The high coefficient of 0.9 between log_reviews and log_installs supports the hypothesis of a reverse causal link between reviews and installs. With the goal of building an efficient model, we'd like to see stronger correlation coefficients between the variables, but there may be predictive power in the interaction between them. Of note, we do see the coefficient between rating and log_installs increase by 2x when we exclude apps with less than 100 reviews. This agrees with our hypothesis that rating does have an influence on install count and that the rating value is more valid as it accrues at least 100 reviews. Lastly, the numeric variables seem to support the statistical assumption of there not being perfect collinearity among independent variables. 
 
 \subsection{Categorical Variables}
 

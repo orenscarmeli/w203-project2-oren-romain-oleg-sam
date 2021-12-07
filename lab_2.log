@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.4)  6 DEC 2021 23:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.4)  7 DEC 2021 00:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -701,7 +701,7 @@ File: lab_2_files/figure-latex/distribution plots (installs)-1.pdf Graphic file
  (type pdf)
 <use lab_2_files/figure-latex/distribution plots (installs)-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (installs)
--1.pdf  used on input line 340.
+-1.pdf  used on input line 342.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 <lab_2_files/figure-latex/distribution plots (installs)-2.pdf, id=112, 469.755p
 t x 325.215pt>
@@ -709,21 +709,23 @@ File: lab_2_files/figure-latex/distribution plots (installs)-2.pdf Graphic file
  (type pdf)
 <use lab_2_files/figure-latex/distribution plots (installs)-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (installs)
--2.pdf  used on input line 340.
+-2.pdf  used on input line 342.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 340--341
+Underfull \hbox (badness 10000) in paragraph at lines 342--343
 [][]
  []
 
 [7] [8 <./lab_2_files/figure-latex/distribution plots (installs)-1.pdf>]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 344.
 <lab_2_files/figure-latex/distribution plots (rating)-1.pdf, id=127, 469.755pt 
 x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (rating)-1.pdf Graphic file (
 type pdf)
 <use lab_2_files/figure-latex/distribution plots (rating)-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (rating)-1
-.pdf  used on input line 344.
+.pdf  used on input line 346.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 <lab_2_files/figure-latex/distribution plots (rating)-2.pdf, id=128, 469.755pt 
 x 325.215pt>
@@ -731,82 +733,82 @@ File: lab_2_files/figure-latex/distribution plots (rating)-2.pdf Graphic file (
 type pdf)
 <use lab_2_files/figure-latex/distribution plots (rating)-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (rating)-2
-.pdf  used on input line 344.
+.pdf  used on input line 346.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 344--345
+Underfull \hbox (badness 10000) in paragraph at lines 346--347
 [][]
  []
 
 [9 <./lab_2_files/figure-latex/distribution plots (installs)-2.pdf>] [10 <./lab
 _2_files/figure-latex/distribution plots (rating)-1.pdf>]
-<lab_2_files/figure-latex/distribution plots (size)-1.pdf, id=147, 469.755pt x 
+<lab_2_files/figure-latex/distribution plots (size)-1.pdf, id=148, 469.755pt x 
 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (size)-1.pdf Graphic file (ty
 pe pdf)
 <use lab_2_files/figure-latex/distribution plots (size)-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (size)-1.p
-df  used on input line 348.
+df  used on input line 350.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<lab_2_files/figure-latex/distribution plots (size)-2.pdf, id=148, 469.755pt x 
+<lab_2_files/figure-latex/distribution plots (size)-2.pdf, id=149, 469.755pt x 
 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (size)-2.pdf Graphic file (ty
 pe pdf)
 <use lab_2_files/figure-latex/distribution plots (size)-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (size)-2.p
-df  used on input line 348.
+df  used on input line 350.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 348--349
+Underfull \hbox (badness 10000) in paragraph at lines 350--351
 [][]
  []
 
 [11 <./lab_2_files/figure-latex/distribution plots (rating)-2.pdf>] [12 <./lab_
 2_files/figure-latex/distribution plots (size)-1.pdf>]
-<lab_2_files/figure-latex/distribution plots (price)-1.pdf, id=168, 469.755pt x
+<lab_2_files/figure-latex/distribution plots (price)-1.pdf, id=169, 469.755pt x
  325.215pt>
 File: lab_2_files/figure-latex/distribution plots (price)-1.pdf Graphic file (t
 ype pdf)
 <use lab_2_files/figure-latex/distribution plots (price)-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (price)-1.
-pdf  used on input line 352.
+pdf  used on input line 354.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<lab_2_files/figure-latex/distribution plots (price)-2.pdf, id=169, 469.755pt x
+<lab_2_files/figure-latex/distribution plots (price)-2.pdf, id=170, 469.755pt x
  325.215pt>
 File: lab_2_files/figure-latex/distribution plots (price)-2.pdf Graphic file (t
 ype pdf)
 <use lab_2_files/figure-latex/distribution plots (price)-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (price)-2.
-pdf  used on input line 352.
+pdf  used on input line 354.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 352--353
+Underfull \hbox (badness 10000) in paragraph at lines 354--355
 [][]
  []
 
 [13 <./lab_2_files/figure-latex/distribution plots (size)-2.pdf>] [14 <./lab_2_
 files/figure-latex/distribution plots (price)-1.pdf>]
-<lab_2_files/figure-latex/correlation plots-1.pdf, id=189, 469.755pt x 325.215p
+<lab_2_files/figure-latex/correlation plots-1.pdf, id=190, 469.755pt x 325.215p
 t>
 File: lab_2_files/figure-latex/correlation plots-1.pdf Graphic file (type pdf)
 <use lab_2_files/figure-latex/correlation plots-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/correlation plots-1.pdf  used
- on input line 358.
+ on input line 360.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<lab_2_files/figure-latex/correlation plots-2.pdf, id=190, 469.755pt x 325.215p
+<lab_2_files/figure-latex/correlation plots-2.pdf, id=191, 469.755pt x 325.215p
 t>
 File: lab_2_files/figure-latex/correlation plots-2.pdf Graphic file (type pdf)
 <use lab_2_files/figure-latex/correlation plots-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/correlation plots-2.pdf  used
- on input line 358.
+ on input line 360.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 358--360
+Underfull \hbox (badness 10000) in paragraph at lines 360--362
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 358--360
+Underfull \hbox (badness 10000) in paragraph at lines 360--362
 []
  []
 
@@ -815,7 +817,7 @@ Overfull \vbox (18.45663pt too high) has occurred while \output is active []
 
 [17 <./lab_2_files/figure-latex/correlation plots-1.pdf> <./lab_2_files/figure-
 latex/correlation plots-2.pdf>]
-Overfull \hbox (17.21326pt too wide) in paragraph at lines 369--382
+Overfull \hbox (17.21326pt too wide) in paragraph at lines 371--384
  [][] 
  []
 
@@ -824,47 +826,47 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.453 
+l.455 
       pdfTeX warning (ext4): destination with the same identifier (name{table.2
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.453 
+l.455 
       ] [19pdfTeX warning (ext4): destination with the same identifier (name{ta
 ble.3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.490 \end{Shaded}
-                  ]
+l.475 \begin{Shaded}
+                    ]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 512.
+(Font)              <9> on input line 514.
 [20] [21pdfTeX warning (ext4): destination with the same identifier (name{table
 .4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.593 
-      ] [22]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 630.
+l.591 \subsubsection
+                    {I.I.D.}] [22]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 632.
 [23]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 630.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 632.
 (./lab_2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 630.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 630.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 632.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 632.
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15790 strings out of 482663
- 232406 string characters out of 5955139
+ 15794 strings out of 482663
+ 232468 string characters out of 5955139
  558094 words of memory out of 5000000
- 30455 multiletter control sequences out of 15000+600000
- 599533 words of font info for 133 fonts, out of 8000000 for 9000
+ 30458 multiletter control sequences out of 15000+600000
+ 599851 words of font info for 134 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 41i,11n,42p,1121b,386s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,11n,42p,1121b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
 c/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/s
 hare/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
@@ -876,12 +878,13 @@ r/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/pub
 lic/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/te
 xmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lm
 ri9.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fon
-ts/type1/public/lm/lmsy9.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb
-></usr/share/texmf/fonts/type1/public/lm/lmtti10.pfb>
-Output written on lab_2.pdf (23 pages, 453754 bytes).
+ts/type1/public/lm/lmsy9.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb
+></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/typ
+e1/public/lm/lmtti10.pfb>
+Output written on lab_2.pdf (23 pages, 478273 bytes).
 PDF statistics:
- 424 PDF objects out of 1000 (max. 8388607)
- 356 compressed objects within 4 object streams
+ 428 PDF objects out of 1000 (max. 8388607)
+ 359 compressed objects within 4 object streams
  64 named destinations out of 1000 (max. 500000)
  18741 words of extra memory for PDF output out of 20736 (max. 10000000)
 
