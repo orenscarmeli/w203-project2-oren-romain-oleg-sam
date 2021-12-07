@@ -381,7 +381,8 @@ stargazer(
   se = list(get_robust_se(model_small), get_robust_se(model_medium), 
             get_robust_se(model_large)),
   column.sep.width = "3pt",
-  font.size = "small"
+  font.size = "small",
+  float = FALSE
 )
 ```
 
