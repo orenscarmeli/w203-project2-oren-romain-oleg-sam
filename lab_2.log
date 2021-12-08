@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.4)  8 DEC 2021 14:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.4)  8 DEC 2021 14:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -884,65 +884,74 @@ df>
 Package pdftex.def Info: lab_2_files/figure-latex/linear conditional expectatio
 ns, figures-side-5.pdf  used on input line 541.
 (pdftex.def)             Requested size: 140.92758pt x 97.56525pt.
-<lab_2_files/figure-latex/error hist plot, figures-side-1.pdf, id=249, 469.755p
-t x 325.215pt>
-File: lab_2_files/figure-latex/error hist plot, figures-side-1.pdf Graphic file
- (type pdf)
-<use lab_2_files/figure-latex/error hist plot, figures-side-1.pdf>
-Package pdftex.def Info: lab_2_files/figure-latex/error hist plot, figures-side
--1.pdf  used on input line 554.
+<lab_2_files/figure-latex/homoskedastic errors, figures-side-1.pdf, id=249, 469
+.755pt x 325.215pt>
+File: lab_2_files/figure-latex/homoskedastic errors, figures-side-1.pdf Graphic
+ file (type pdf)
+<use lab_2_files/figure-latex/homoskedastic errors, figures-side-1.pdf>
+Package pdftex.def Info: lab_2_files/figure-latex/homoskedastic errors, figures
+-side-1.pdf  used on input line 545.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-<lab_2_files/figure-latex/error hist plot, figures-side-2.pdf, id=250, 469.755p
-t x 325.215pt>
-File: lab_2_files/figure-latex/error hist plot, figures-side-2.pdf Graphic file
- (type pdf)
-<use lab_2_files/figure-latex/error hist plot, figures-side-2.pdf>
-Package pdftex.def Info: lab_2_files/figure-latex/error hist plot, figures-side
--2.pdf  used on input line 554.
-(pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-
-Overfull \hbox (2.22104pt too wide) in paragraph at lines 554--555
-[][] [] 
- []
-
 [14 <./lab_2_files/figure-latex/linear conditional expectations, figures-side-1
 .pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-side
 -2.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-si
 de-3.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-
 side-4.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figure
-s-side-5.pdf>]
-<./pictures/complex_model.PNG, id=296, 782.925pt x 651.93562pt>
+s-side-5.pdf> <./lab_2_files/figure-latex/homoskedastic errors, figures-side-1.
+pdf>]
+<lab_2_files/figure-latex/error hist plot, figures-side-1.pdf, id=300, 469.755p
+t x 325.215pt>
+File: lab_2_files/figure-latex/error hist plot, figures-side-1.pdf Graphic file
+ (type pdf)
+<use lab_2_files/figure-latex/error hist plot, figures-side-1.pdf>
+Package pdftex.def Info: lab_2_files/figure-latex/error hist plot, figures-side
+-1.pdf  used on input line 556.
+(pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
+<lab_2_files/figure-latex/error hist plot, figures-side-2.pdf, id=301, 469.755p
+t x 325.215pt>
+File: lab_2_files/figure-latex/error hist plot, figures-side-2.pdf Graphic file
+ (type pdf)
+<use lab_2_files/figure-latex/error hist plot, figures-side-2.pdf>
+Package pdftex.def Info: lab_2_files/figure-latex/error hist plot, figures-side
+-2.pdf  used on input line 556.
+(pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
+
+Overfull \hbox (2.22104pt too wide) in paragraph at lines 556--557
+[][] [] 
+ []
+
+<./pictures/complex_model.PNG, id=302, 782.925pt x 651.93562pt>
 File: ./pictures/complex_model.PNG Graphic file (type png)
 <use ./pictures/complex_model.PNG>
-Package pdftex.def Info: ./pictures/complex_model.PNG  used on input line 565.
+Package pdftex.def Info: ./pictures/complex_model.PNG  used on input line 567.
 (pdftex.def)             Requested size: 234.86737pt x 195.57224pt.
-[15pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
- has been already used, duplicate ignored
+[15 <./lab_2_files/figure-latex/error hist plot, figures-side-1.pdf> <./lab_2_f
+iles/figure-latex/error hist plot, figures-side-2.pdf>] [16pdfTeX warning (ext4
+): destination with the same identifier (name{figure.2}) has been already used,
+ duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.575 
-       <./lab_2_files/figure-latex/error hist plot, figures-side-1.pdf> <./lab_
-2_files/figure-latex/error hist plot, figures-side-2.pdf> <./pictures/complex_m
-odel.PNG>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 596.
-[16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 596.
+l.589 
+       <./pictures/complex_model.PNG>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 598.
+[17]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 598.
 (./lab_2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 596.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 596.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 598.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 598.
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15429 strings out of 482663
- 232119 string characters out of 5955139
+ 15435 strings out of 482663
+ 232575 string characters out of 5955139
  549115 words of memory out of 5000000
- 30084 multiletter control sequences out of 15000+600000
- 608206 words of font info for 137 fonts, out of 8000000 for 9000
+ 30090 multiletter control sequences out of 15000+600000
+ 608123 words of font info for 136 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 41i,10n,42p,1231b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,10n,42p,1312b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
 c/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/s
 hare/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
@@ -958,10 +967,10 @@ xmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9
 /usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/
 public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy9.pfb></usr/sha
 re/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on lab_2.pdf (16 pages, 2929290 bytes).
+Output written on lab_2.pdf (17 pages, 3354414 bytes).
 PDF statistics:
- 513 PDF objects out of 1000 (max. 8388607)
- 430 compressed objects within 5 object streams
- 66 named destinations out of 1000 (max. 500000)
- 20882 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 524 PDF objects out of 1000 (max. 8388607)
+ 438 compressed objects within 5 object streams
+ 67 named destinations out of 1000 (max. 500000)
+ 20887 words of extra memory for PDF output out of 24883 (max. 10000000)
 
