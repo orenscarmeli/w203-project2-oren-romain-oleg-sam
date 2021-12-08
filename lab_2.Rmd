@@ -81,13 +81,13 @@ We foresee two opposing sides to the relationship between application size and s
 Epsilon represents variables which may influence application success but are independent from the other variables in our causal graph. For instance, these could include geographical location or the time of day at which a download occurs. Crucially, we assume that there do not exist any directed paths from epsilon to any of the five explanatory variables. This guarantees independence and is necessary for ordinary least-squares regression to be valid.
 
 \section{Data}
-To answer our research question, we will leverage publicly available data about applications available on the Google Play Store. This data was randomly scraped from the Google Play Store interface and uploaded to Kaggle.com in 2019. It contains key information about sampled applications, such as downloads, file size, consumer rating, category, and price. In total, the data contains records of about 10,000 applications. 
+To answer our research question, we will leverage publicly available data about applications available on the Google Play Store. This data was randomly scraped from the Google Play Store interface and uploaded to [Kaggle.com](https://www.kaggle.com/lava18/google-play-store-apps) in 2019. It contains key information about sampled applications, such as downloads, file size, consumer rating, category, and price. In total, the data contains records of about 10,000 applications. 
 
 \par
 For the modeling phase, we will use ordinary least-squares (OLS) regression. OLS regression is the plug-in estimator for the best linear predictor of a dependent random variable given the joint distribution of a set of independent random variables. Although OLS regression is often used with the goal of making predictions on new data, we will instead use it to answer a causal question about the relationship between variables. By interpreting model coefficients within the context of our causal theory, we will develop a statistically valid argument that addresses the research question.
 
 \par
-In our case, the dependent variable is application success and the independent variables are the predictors included in our causal model—consumer rating, price, category, age, and size. Unfortunately, the fields in our data set do not map exactly onto these variables, so we will approximate them using the following operationalizations:
+In our case, the dependent variable is application success and the independent variables are the predictors included in our causal model—consumer rating, price, category, age, and size. Unfortunately, the fields in our data set do not map exactly onto these variables, so we will approximate them using the following variables:
 
 \subsection{Dependent variable}
 
@@ -98,7 +98,6 @@ In our case, the dependent variable is application success and the independent v
 * Consumer rating — `rating` (the average consumer rating for the application out of 5)
 * Price — `price` (the price of the application) and `type` (the price type of the application, free or paid)
 * Category — `category` (the category tagged for the application, i.e Lifestyle, Game) and `content_rating` (the official content rating given to the application, i.e Teen, Everyone, Mature 17+)
-* `size` — The memory space occupied by the application.
 * Age — `current_version` (the current version number of the application) and `last_updated` (the date when the application was last updated)
 * Size — `size` (the download size of the application, in units of MB)
 
