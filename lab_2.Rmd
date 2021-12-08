@@ -13,7 +13,7 @@ header_includes:
 ---
 
 ```{r setup, include=FALSE} 
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.pos = 'H') 
 options(tinytex.verbose = TRUE)
 ```
 
@@ -475,9 +475,6 @@ Considering these factors, the research team has decided that Model 2 is the bes
 \section{Model Limitations}
 
 \subsection{Statistical Limitations}
->Lab 2 Intructions: As a team, evaluate all of the large sample model assumptions. However, you do not necessarily want to discuss every assumption in your report. Instead, highlight any assumption that might pose significant problems for your analysis. For any violations that you identify, describe the statistical consequences. If you are able to identify any strategies to mitigate the consequences, explain these strategies. 
-Note that you may need to change your model specifications in response to violations of the large sample model. 
-
 In the following section, we assess the five assumptions of the classic linear model: independence and identical distributions (I.I.D.), no perfect collinearity, linear conditional expectations, homoskedastic errors, and normally distributed errors.
 
 \subsubsection{I.I.D.}
@@ -499,8 +496,6 @@ According to the Kaggle authors, this data set was collected by randomly scrapin
 Because our data fails to meet the assumption of homoskedasticity, we adopt the large-sample assumptions (assumptions 1 and 2) instead. Specifically, we report robust standard errors rather than non-adjusted errors in our results.
 
 \subsection{Structural Limitations of Our Model}
->Lab 2 Intructions: What are the most important *omitted variables* that you were not able to measure and include in your analysis? For each variable you name, you should *reason about the direction of bias* caused by omitting this variable and whether the omission of this variable calls into question the core results you are reporting. What data could you collect that would resolve any omitted variables bias? 
-
 The true causal diagram is undoubtedly more complex than the one we have outlined above. We have identified several omitted variables that could affect our statistical models and any conclusions we infer from them, shown in the second causal diagram below. We discuss the relationships these omitted variables have with our existing variables and the ways in which they could bias our results.
 
 ![A revised version of the causal diagram including omitted variables.](./pictures/complex_model.PNG){#image2 .class width=50%}
@@ -514,7 +509,11 @@ Outside of the Google Play store user interface, we hypothesize brand awareness 
 \subsubsection{Total Addressable Market}
 This variable relates to the opportunity of a product which is measured in either revenue or the number of customers that would be interested in the product. This varies based on the functionality of the product/service. For this omitted variable we are focusing on the number of available customers. We believe this is positively correlated with install count as it provides a larger funnel to acquire app downloads. We do not expect a very strong association with app rating, but would hypothesize a positive one. The larger the market, the more crucial it is the build a differentiated product with a quality experience. This would make the bias direction positive which is the same direction of the rating coefficient as our model. Based on this reasoning, the bias would be away from zero and causing us to overestimate model coefficients.
 
-\section{Conclusion}
+\section{Conclusions and Discussion}
+
+\subsection{Conclusions}
 Earlier in this report, it was hypothesized that higher consumer ratings will lead to greater application success, as described by the number of installations of an application on the Google Play store. The models produced from this analysis do agree with this hypothesis, and confirm that higher rated applications have more success on the store. Along with this conclusion, we found that free applications, newer applications, and larger (in terms of storage size) applications are also positive indicators for application installation. Unfortunately, these results have low confidence ($adj. {r^2} = 0.247$), leading to some uncertainty about the validity of the proposed model. Still, we believe that the lack of significance is largely due to omitted variable bias, general irregularity in the data due to human randomness, and other aspects, provide enough explanation to assume some level of trust in the outcome of this analysis.
+
+\subsection{Discussion}
 
 \section{Appendix}
