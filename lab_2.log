@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.4)  8 DEC 2021 11:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.4)  8 DEC 2021 14:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -659,290 +659,290 @@ has been already used, duplicate ignored
 l.161 
        <./pictures/simple_model.PNG>] [4]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-14.
+10.
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-14.
+10.
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [5]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 266.
+(Font)              <9> on input line 260.
 [6pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
 as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.282 
-      ]
+l.279 F
+       rom the differences between their medians and means, \texttt{size} an...
+]
 <lab_2_files/figure-latex/distribution plots (installs), figures-side-1.pdf, id
-=121, 469.755pt x 325.215pt>
+=122, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (installs), figures-side-1.pd
 f Graphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (installs), figures-side-1.pdf
 >
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (installs)
-, figures-side-1.pdf  used on input line 293.
+, figures-side-1.pdf  used on input line 287.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 <lab_2_files/figure-latex/distribution plots (installs), figures-side-2.pdf, id
-=122, 469.755pt x 325.215pt>
+=123, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (installs), figures-side-2.pd
 f Graphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (installs), figures-side-2.pdf
 >
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (installs)
-, figures-side-2.pdf  used on input line 293.
+, figures-side-2.pdf  used on input line 287.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 
-Overfull \hbox (2.22104pt too wide) in paragraph at lines 293--294
+Overfull \hbox (2.22104pt too wide) in paragraph at lines 287--288
 [][] [] 
  []
 
 <lab_2_files/figure-latex/distribution plots (rating), figures-side-1.pdf, id=1
-23, 469.755pt x 325.215pt>
+24, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (rating), figures-side-1.pdf 
 Graphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (rating), figures-side-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (rating), 
-figures-side-1.pdf  used on input line 301.
+figures-side-1.pdf  used on input line 295.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 <lab_2_files/figure-latex/distribution plots (rating), figures-side-2.pdf, id=1
-24, 469.755pt x 325.215pt>
+25, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (rating), figures-side-2.pdf 
 Graphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (rating), figures-side-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (rating), 
-figures-side-2.pdf  used on input line 301.
+figures-side-2.pdf  used on input line 295.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 
-Overfull \hbox (2.22104pt too wide) in paragraph at lines 301--302
+Overfull \hbox (2.22104pt too wide) in paragraph at lines 295--296
 [][] [] 
  []
 
 [7 <./lab_2_files/figure-latex/distribution plots (installs), figures-side-1.pd
 f> <./lab_2_files/figure-latex/distribution plots (installs), figures-side-2.pd
-f>]
-<lab_2_files/figure-latex/distribution plots (size), figures-side-1.pdf, id=144
+f> <./lab_2_files/figure-latex/distribution plots (rating), figures-side-1.pdf>
+ <./lab_2_files/figure-latex/distribution plots (rating), figures-side-2.pdf>]
+<lab_2_files/figure-latex/distribution plots (size), figures-side-1.pdf, id=156
 , 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (size), figures-side-1.pdf Gr
 aphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (size), figures-side-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (size), fi
-gures-side-1.pdf  used on input line 309.
+gures-side-1.pdf  used on input line 303.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-<lab_2_files/figure-latex/distribution plots (size), figures-side-2.pdf, id=145
+<lab_2_files/figure-latex/distribution plots (size), figures-side-2.pdf, id=157
 , 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (size), figures-side-2.pdf Gr
 aphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (size), figures-side-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (size), fi
-gures-side-2.pdf  used on input line 309.
+gures-side-2.pdf  used on input line 303.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 
-Overfull \hbox (2.22104pt too wide) in paragraph at lines 309--310
+Overfull \hbox (2.22104pt too wide) in paragraph at lines 303--304
 [][] [] 
  []
 
-<lab_2_files/figure-latex/distribution plots (price), figures-side-1.pdf, id=14
-6, 469.755pt x 325.215pt>
+<lab_2_files/figure-latex/distribution plots (price), figures-side-1.pdf, id=15
+8, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (price), figures-side-1.pdf G
 raphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (price), figures-side-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (price), f
-igures-side-1.pdf  used on input line 317.
+igures-side-1.pdf  used on input line 311.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-<lab_2_files/figure-latex/distribution plots (price), figures-side-2.pdf, id=14
-7, 469.755pt x 325.215pt>
+<lab_2_files/figure-latex/distribution plots (price), figures-side-2.pdf, id=15
+9, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (price), figures-side-2.pdf G
 raphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (price), figures-side-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (price), f
-igures-side-2.pdf  used on input line 317.
+igures-side-2.pdf  used on input line 311.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 
-Overfull \hbox (2.22104pt too wide) in paragraph at lines 317--318
+Overfull \hbox (2.22104pt too wide) in paragraph at lines 311--312
 [][] [] 
  []
 
-[8 <./lab_2_files/figure-latex/distribution plots (rating), figures-side-1.pdf>
- <./lab_2_files/figure-latex/distribution plots (rating), figures-side-2.pdf> <
-./lab_2_files/figure-latex/distribution plots (size), figures-side-1.pdf> <./la
-b_2_files/figure-latex/distribution plots (size), figures-side-2.pdf>]
 <lab_2_files/figure-latex/distribution plots (version), figures-side-1.pdf, id=
-173, 469.755pt x 325.215pt>
+160, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (version), figures-side-1.pdf
  Graphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (version), figures-side-1.pdf>
 
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (version),
- figures-side-1.pdf  used on input line 325.
+ figures-side-1.pdf  used on input line 319.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 <lab_2_files/figure-latex/distribution plots (version), figures-side-2.pdf, id=
-174, 469.755pt x 325.215pt>
+161, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/distribution plots (version), figures-side-2.pdf
  Graphic file (type pdf)
 <use lab_2_files/figure-latex/distribution plots (version), figures-side-2.pdf>
 
 Package pdftex.def Info: lab_2_files/figure-latex/distribution plots (version),
- figures-side-2.pdf  used on input line 325.
+ figures-side-2.pdf  used on input line 319.
+(pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
+
+Overfull \hbox (2.22104pt too wide) in paragraph at lines 319--320
+[][] [] 
+ []
+
+[8 <./lab_2_files/figure-latex/distribution plots (size), figures-side-1.pdf> <
+./lab_2_files/figure-latex/distribution plots (size), figures-side-2.pdf> <./la
+b_2_files/figure-latex/distribution plots (price), figures-side-1.pdf> <./lab_2
+_files/figure-latex/distribution plots (price), figures-side-2.pdf>]
+<lab_2_files/figure-latex/correlation plots, figures-side-1.pdf, id=186, 469.75
+5pt x 325.215pt>
+File: lab_2_files/figure-latex/correlation plots, figures-side-1.pdf Graphic fi
+le (type pdf)
+<use lab_2_files/figure-latex/correlation plots, figures-side-1.pdf>
+Package pdftex.def Info: lab_2_files/figure-latex/correlation plots, figures-si
+de-1.pdf  used on input line 325.
+(pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
+<lab_2_files/figure-latex/correlation plots, figures-side-2.pdf, id=187, 469.75
+5pt x 325.215pt>
+File: lab_2_files/figure-latex/correlation plots, figures-side-2.pdf Graphic fi
+le (type pdf)
+<use lab_2_files/figure-latex/correlation plots, figures-side-2.pdf>
+Package pdftex.def Info: lab_2_files/figure-latex/correlation plots, figures-si
+de-2.pdf  used on input line 325.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 
 Overfull \hbox (2.22104pt too wide) in paragraph at lines 325--326
 [][] [] 
  []
 
-<lab_2_files/figure-latex/correlation plots, figures-side-1.pdf, id=175, 469.75
-5pt x 325.215pt>
-File: lab_2_files/figure-latex/correlation plots, figures-side-1.pdf Graphic fi
-le (type pdf)
-<use lab_2_files/figure-latex/correlation plots, figures-side-1.pdf>
-Package pdftex.def Info: lab_2_files/figure-latex/correlation plots, figures-si
-de-1.pdf  used on input line 331.
-(pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-<lab_2_files/figure-latex/correlation plots, figures-side-2.pdf, id=176, 469.75
-5pt x 325.215pt>
-File: lab_2_files/figure-latex/correlation plots, figures-side-2.pdf Graphic fi
-le (type pdf)
-<use lab_2_files/figure-latex/correlation plots, figures-side-2.pdf>
-Package pdftex.def Info: lab_2_files/figure-latex/correlation plots, figures-si
-de-2.pdf  used on input line 331.
-(pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-
-Overfull \hbox (2.22104pt too wide) in paragraph at lines 331--332
-[][] [] 
- []
-
-[9 <./lab_2_files/figure-latex/distribution plots (price), figures-side-1.pdf> 
-<./lab_2_files/figure-latex/distribution plots (price), figures-side-2.pdf> <./
-lab_2_files/figure-latex/distribution plots (version), figures-side-1.pdf> <./l
-ab_2_files/figure-latex/distribution plots (version), figures-side-2.pdf>] [10p
-dfTeX warning (ext4): destination with the same identifier (name{table.2}) has 
-been already used, duplicate ignored
+[9 <./lab_2_files/figure-latex/distribution plots (version), figures-side-1.pdf
+> <./lab_2_files/figure-latex/distribution plots (version), figures-side-2.pdf>
+ <./lab_2_files/figure-latex/correlation plots, figures-side-1.pdf> <./lab_2_fi
+les/figure-latex/correlation plots, figures-side-2.pdf>] [10pdfTeX warning (ext
+4): destination with the same identifier (name{table.2}) has been already used,
+ duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.406 
+l.410 
       pdfTeX warning (ext4): destination with the same identifier (name{table.3
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.406 
-       <./lab_2_files/figure-latex/correlation plots, figures-side-1.pdf> <./la
-b_2_files/figure-latex/correlation plots, figures-side-2.pdf>] [11pdfTeX warnin
-g (ext4): destination with the same identifier (name{table.4}) has been already
- used, duplicate ignored
+l.410 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.4
+}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.452 \subsection
-                 {OLS Regression Results}] [12] [13] [14]
+l.410 
+      ] [11] [12] [13]
 <lab_2_files/figure-latex/linear conditional expectations, figures-side-1.pdf, 
-id=247, 469.755pt x 325.215pt>
+id=244, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/linear conditional expectations, figures-side-1.
 pdf Graphic file (type pdf)
 <use lab_2_files/figure-latex/linear conditional expectations, figures-side-1.p
 df>
 Package pdftex.def Info: lab_2_files/figure-latex/linear conditional expectatio
-ns, figures-side-1.pdf  used on input line 547.
+ns, figures-side-1.pdf  used on input line 541.
 (pdftex.def)             Requested size: 140.92758pt x 97.56525pt.
 <lab_2_files/figure-latex/linear conditional expectations, figures-side-2.pdf, 
-id=248, 469.755pt x 325.215pt>
+id=245, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/linear conditional expectations, figures-side-2.
 pdf Graphic file (type pdf)
 <use lab_2_files/figure-latex/linear conditional expectations, figures-side-2.p
 df>
 Package pdftex.def Info: lab_2_files/figure-latex/linear conditional expectatio
-ns, figures-side-2.pdf  used on input line 547.
+ns, figures-side-2.pdf  used on input line 541.
 (pdftex.def)             Requested size: 140.92758pt x 97.56525pt.
 <lab_2_files/figure-latex/linear conditional expectations, figures-side-3.pdf, 
-id=249, 469.755pt x 325.215pt>
+id=246, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/linear conditional expectations, figures-side-3.
 pdf Graphic file (type pdf)
 <use lab_2_files/figure-latex/linear conditional expectations, figures-side-3.p
 df>
 Package pdftex.def Info: lab_2_files/figure-latex/linear conditional expectatio
-ns, figures-side-3.pdf  used on input line 547.
+ns, figures-side-3.pdf  used on input line 541.
 (pdftex.def)             Requested size: 140.92758pt x 97.56525pt.
 <lab_2_files/figure-latex/linear conditional expectations, figures-side-4.pdf, 
-id=250, 469.755pt x 325.215pt>
+id=247, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/linear conditional expectations, figures-side-4.
 pdf Graphic file (type pdf)
 <use lab_2_files/figure-latex/linear conditional expectations, figures-side-4.p
 df>
 Package pdftex.def Info: lab_2_files/figure-latex/linear conditional expectatio
-ns, figures-side-4.pdf  used on input line 547.
+ns, figures-side-4.pdf  used on input line 541.
 (pdftex.def)             Requested size: 140.92758pt x 97.56525pt.
 <lab_2_files/figure-latex/linear conditional expectations, figures-side-5.pdf, 
-id=251, 469.755pt x 325.215pt>
+id=248, 469.755pt x 325.215pt>
 File: lab_2_files/figure-latex/linear conditional expectations, figures-side-5.
 pdf Graphic file (type pdf)
 <use lab_2_files/figure-latex/linear conditional expectations, figures-side-5.p
 df>
 Package pdftex.def Info: lab_2_files/figure-latex/linear conditional expectatio
-ns, figures-side-5.pdf  used on input line 547.
+ns, figures-side-5.pdf  used on input line 541.
 (pdftex.def)             Requested size: 140.92758pt x 97.56525pt.
-[15 <./lab_2_files/figure-latex/linear conditional expectations, figures-side-1
-.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-side
--2.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-si
-de-3.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-
-side-4.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figure
-s-side-5.pdf>]
-<lab_2_files/figure-latex/error hist plot, figures-side-1.pdf, id=297, 469.755p
+<lab_2_files/figure-latex/error hist plot, figures-side-1.pdf, id=249, 469.755p
 t x 325.215pt>
 File: lab_2_files/figure-latex/error hist plot, figures-side-1.pdf Graphic file
  (type pdf)
 <use lab_2_files/figure-latex/error hist plot, figures-side-1.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/error hist plot, figures-side
--1.pdf  used on input line 560.
+-1.pdf  used on input line 554.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-<lab_2_files/figure-latex/error hist plot, figures-side-2.pdf, id=298, 469.755p
+<lab_2_files/figure-latex/error hist plot, figures-side-2.pdf, id=250, 469.755p
 t x 325.215pt>
 File: lab_2_files/figure-latex/error hist plot, figures-side-2.pdf Graphic file
  (type pdf)
 <use lab_2_files/figure-latex/error hist plot, figures-side-2.pdf>
 Package pdftex.def Info: lab_2_files/figure-latex/error hist plot, figures-side
--2.pdf  used on input line 560.
+-2.pdf  used on input line 554.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
 
-Overfull \hbox (2.22104pt too wide) in paragraph at lines 560--561
+Overfull \hbox (2.22104pt too wide) in paragraph at lines 554--555
 [][] [] 
  []
 
-<./pictures/complex_model.PNG, id=299, 782.925pt x 651.93562pt>
+[14 <./lab_2_files/figure-latex/linear conditional expectations, figures-side-1
+.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-side
+-2.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-si
+de-3.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figures-
+side-4.pdf> <./lab_2_files/figure-latex/linear conditional expectations, figure
+s-side-5.pdf>]
+<./pictures/complex_model.PNG, id=296, 782.925pt x 651.93562pt>
 File: ./pictures/complex_model.PNG Graphic file (type png)
 <use ./pictures/complex_model.PNG>
-Package pdftex.def Info: ./pictures/complex_model.PNG  used on input line 571.
+Package pdftex.def Info: ./pictures/complex_model.PNG  used on input line 565.
 (pdftex.def)             Requested size: 234.86737pt x 195.57224pt.
-[16pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
+[15pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.578 \subsubsection
-                    {App Rankings} <./lab_2_files/figure-latex/error hist plot,
- figures-side-1.pdf> <./lab_2_files/figure-latex/error hist plot, figures-side-
-2.pdf> <./pictures/complex_model.PNG>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 602.
-[17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 602.
+l.575 
+       <./lab_2_files/figure-latex/error hist plot, figures-side-1.pdf> <./lab_
+2_files/figure-latex/error hist plot, figures-side-2.pdf> <./pictures/complex_m
+odel.PNG>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 596.
+[16]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 596.
 (./lab_2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 602.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 602.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 596.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 596.
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15430 strings out of 482663
- 232126 string characters out of 5955139
- 543115 words of memory out of 5000000
+ 15429 strings out of 482663
+ 232119 string characters out of 5955139
+ 549115 words of memory out of 5000000
  30084 multiletter control sequences out of 15000+600000
  608206 words of font info for 137 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 41i,10n,42p,1385b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,10n,42p,1231b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
 c/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/s
 hare/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
@@ -958,10 +958,10 @@ xmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9
 /usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/
 public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy9.pfb></usr/sha
 re/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on lab_2.pdf (17 pages, 2929687 bytes).
+Output written on lab_2.pdf (16 pages, 2929290 bytes).
 PDF statistics:
- 517 PDF objects out of 1000 (max. 8388607)
- 433 compressed objects within 5 object streams
- 67 named destinations out of 1000 (max. 500000)
+ 513 PDF objects out of 1000 (max. 8388607)
+ 430 compressed objects within 5 object streams
+ 66 named destinations out of 1000 (max. 500000)
  20882 words of extra memory for PDF output out of 24883 (max. 10000000)
 
