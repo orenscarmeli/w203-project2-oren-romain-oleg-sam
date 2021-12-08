@@ -111,7 +111,7 @@ Before we proceed with building any statistical models, we will conduct a thorou
 
 \section{Exploratory Data Analysis}
 
-Prior to exploring the data, we create a few rules to filter and clean records based on logical conditions. This procedure involves removing duplicate records, removing records with null review counts, and removing records with consumer ratings greater than 5. Since our research question focuses on consumer rating, we elect to only keep records with valid values for that field. Intuitively, we do not believe that consumer rating is a suitable predictor if there are fewer than 100 ratings in total, so we only keep applications that exceed this amount. Although this step removes almost 25% of the data, it is acceptable given that the initial data set contains approximately 10,000 records. 
+Prior to exploring the data, we created a few rules to filter and clean records based on logical conditions. This procedure involves removing duplicate records, removing records with null review counts, and removing records with consumer ratings greater than 5. Since our research question focuses on consumer rating, we elect to only keep records with valid values for that field. Intuitively, we do not believe that consumer rating is a suitable predictor if there are fewer than 100 ratings in total, so we only keep applications that exceed this amount. Although this step removes almost 25% of the data, it is acceptable given that the initial data set contains approximately 10,000 records. 
 
 \par
 After these initial operations, the cleaned data set contains 7,226 records (i.e distinct applications) with 24 metadata columns, 11 of which we built. We split up the exploration into two sections based on the type of the variable, numeric versus categorical. 
@@ -161,7 +161,7 @@ data_clean <- get_clean_dataset(minimum_review_count = 0)
 
 \subsection{Numeric Variables}
 
-For the numeric variables, we wanted to understand each underlying distribution as well as examine the correlations and covariances among them. The distributions are used to measure the quality of the data, identify outliers, and evaluate the need for variable transformations. In addition, understanding the correlations between variables helps us to highlight those that might explain the variance of our dependent variable, and to quantify the level of collinearity between different features.
+For the numeric variables, we wanted to understand the underlying distributions for each as well as examine the correlations and covariances among them. The distributions are used to measure the quality of the data, identify outliers, and evaluate the need for variable transformations. In addition, understanding the correlations between variables helps us to highlight those that might explain the variance of our dependent variable, and to quantify the level of collinearity between different features.
 
 \subsubsection{Distributions}
 
@@ -197,7 +197,7 @@ skew_installs <- skewness(data_clean$installs, na.rm = TRUE)
 ```
 
 \par
-Application success is measured using the `installs` feature, which represents the the raw download count of application. It is important to note here that `installs` is a binned feature. The bins start at 1 and scale logarithmically; 1+, 5+, 10+, 100+, 500+, 1000+, etc. For example, a value of 100+ means that an application has between 100 and 499 downloads. In the cleaning step, we removed the + sign and converted `installs` to a metric variable. This conversion is valid because the variable is ordinal and there is a measurable distance between bins. Given that this distance scales logarithmically, we can also claim that it is consistent between bins. Although there is some error in precision due to the fact that binning obscures the true value, we believe that `installs` can be treated as a metric variable in practice. The raw distribution has a strong right skew of $\tilde{\mu}_3 = `r signif(skew_installs, 3)`$; the maximum is `r signif(max_installs, 3)` and the median is `r signif(med_installs, 3)`. Unsurprisingly, applying a logarithmic transformation causes the resulting distribution to resemble a normal distribution, which makes it an appropriate transformation for future modeling.
+Application success is measured using the `installs` feature, which represents the raw download count of application. It is important to note here that `installs` is a binned feature. The bins start at 1 and scale logarithmically; 1+, 5+, 10+, 100+, 500+, 1000+, etc. For example, a value of 100+ means that an application has between 100 and 499 downloads. In the cleaning step, we removed the + sign and converted `installs` to a metric variable. This conversion is valid because the variable is ordinal and there is a measurable distance between bins. Given that this distance scales logarithmically, we can also claim that it is consistent between bins. Although there is some error in precision due to the fact that binning obscures the true value, we believe that `installs` can be treated as a metric variable in practice. The raw distribution has a strong right skew of $\tilde{\mu}_3 = `r signif(skew_installs, 3)`$; the maximum is `r signif(max_installs, 3)` and the median is `r signif(med_installs, 3)`. Unsurprisingly, applying a logarithmic transformation causes the resulting distribution to resemble a normal distribution, which makes it an appropriate transformation for future modeling.
 
 ``` {r distribution plots (installs), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 ggplot(data = data_clean, aes(x = installs)) +
@@ -356,7 +356,7 @@ corrplot(cor(data_clean[,numeric_cols], use = "complete.obs"),
          mar=c(0,0,1,0), # http://stackoverflow.com/a/14754408/54964
          title = "All Applications")
 
-#corrplot(cor(data_clean[data_clean$reviews >= 100,numeric_cols], use = "complete.obs"), 
+#corrplot(cor(data_clean[data_clean$reviews >= 6,numeric_cols], use = "complete.obs"), 
 #         method = 'number',
 #         mar=c(0,0,1,0), # http://stackoverflow.com/a/14754408/54964
 #         title = "Applications With at least 100 reviews (5th PCTL)")
@@ -369,7 +369,7 @@ corrplot(cor(data_clean[data_clean$reviews >= 100, numeric_cols], use = "complet
 
 \subsection{Categorical Variables}
 
-For the categorical features, we want to aggregate the frequency and mean of `log_install` by feature sublabel. We use the mean as a measure of central tendency rather than the median given the approximately normal distribution of the `log_installs`. To identify which categorical features have the largest dispersion across sublabels, we calculate quantile tables using the average `log_installs` counts. We choose to exclude sublabels with fewer than 100 applications.
+For the categorical features, we want to aggregate the frequency and mean of `log_install` by feature sublabel. We use the mean as a measure of central tendency rather than the median given the approximately normal distribution of the `log_installs`. To identify which categorical features have the largest dispersion across sublabels, we built a quantile table using the sublabel averages of `log_installs` as the datapoints for each categorical feature. We choose to exclude sublabels with fewer than 100 applications to remove noise from small samples.
 
 ``` {r plots, echo = FALSE, results = 'asis'}
 
@@ -408,7 +408,7 @@ kable(table_long_cat[Variable == "content_rating"], caption = 'Sublabel summary 
 
 ```
 
-From the quantile summary table, all four categorical features have at least a 20% dispersion across the most frequent and least frequent sublabels. This indicates that these features might have some predictive power as inputs to a regression model. Notably, the `category` column seems to have the largest dispersion across groups, implying that it could be greatly impactful. We have omitted the table `android_version` as it is difficult to interpret. 
+From the quantile summary table, all four categorical features have at least a 20% dispersion across the sublabels with min and max average `log_installs`. This indicates that these features might have some predictive power as inputs to a regression model. Notably, the `category` column seems to have the largest dispersion across groups, implying that it could be greatly impactful. We have omitted the table `android_version` as it is difficult to interpret. 
 
 \par
 Overall, this analysis motivates using `category` and `content_rating` as explanatory variables in regression models. To ease interpretability and limit the number of variables in our models, we will use binned and binary versions of these variables, isolating the sublabels with the highest frequencies.
