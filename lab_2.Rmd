@@ -48,7 +48,7 @@ Before we can discuss our data and research design, we must first describe the c
 \subsection{Simple Causal Model}
 We identify five factors that bear causal influence on the success of an application. These are (1) consumer rating, (2) price, (3) category, (4) age, and (5) size. Our proposed causal graph is shown below.
 
-![A hypothetical causal diagram for Google Play Store applications.](./simple_model.PNG){#image1 .class width=50%}
+![A hypothetical causal diagram for Google Play Store applications.](./pictures/simple_model.PNG){#image1 .class width=50%}
 
 \subsubsection{Application Success}
 The goal of our analysis is to identify causal factors of application success, and more specifically to assess whether consumer rating has a positive effect on application success. There are different ways in which we could operationalize application success; our study will use raw download count as a surrogate, since it directly measures the number of consumers that made the decision to download an application. Although this choice ignores other potential aspects of success, such as revenue or social impact, it is effective in its simplicity and appropriate for this study.
@@ -503,7 +503,7 @@ Because our data fails to meet the assumption of homoskedasticity, we adopt the 
 
 The true causal diagram is undoubtedly more complex than the one we have outlined above. We have identified several omitted variables that could affect our statistical models and any conclusions we infer from them, shown in the second causal diagram below. We discuss the relationships these omitted variables have with our existing variables and the ways in which they could bias our results.
 
-![A revised version of the causal diagram including omitted variables.](./complex_model.PNG){#image2 .class width=50%}
+![A revised version of the causal diagram including omitted variables.](./pictures/complex_model.PNG){#image2 .class width=50%}
 
 \subsubsection{Brand Awareness}
 Brand awareness is the measure of how memorable and recognizable a brand is to its target audience. For our specific research question, we define this concept as the percentage of consumers, whom have the capability to download apps from the Google Play store, that are familiar with the brand. We believe brand awareness to be positively correlated with both consumer success and rating. Larger awareness expands the acquisition funnel for an organization's application leading to more installs. Organizations with quality products likely have more disposable cash for marketing and thus better awareness among consumers. This would make the bias direction positive which is the same direction of the rating coefficient as our model. Based on this reasoning, the bias would be away from zero and causing us to overestimate model coefficients.
