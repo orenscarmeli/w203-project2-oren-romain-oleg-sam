@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.12.7)  7 DEC 2021 15:48
-=======
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.4)  7 DEC 2021 15:19
->>>>>>> bb27cf7361b85526c317e1140ea8b15a39912d94
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.12.7)  7 DEC 2021 16:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -946,7 +942,7 @@ ame{table.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.495 \end{quote}
-                 ] [13] [14] [15] [16] [17] (./lab_2.aux)
+                 ] [13] [14] [15] [16] [17] [18] (./lab_2.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -954,14 +950,13 @@ Package rerunfilecheck Info: File `lab_2.out' has not changed.
 (rerunfilecheck)             Checksum: 9A6E98BF14A61CD85524FFB245414066;4638.
  ) 
 Here is how much of TeX's memory you used:
-<<<<<<< HEAD
- 13937 strings out of 480313
- 227203 string characters out of 5895779
+ 13938 strings out of 480313
+ 227210 string characters out of 5895779
  553907 words of memory out of 5000000
  31462 multiletter control sequences out of 15000+600000
  465361 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,9n,63p,1216b,403s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,9n,63p,1224b,403s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/samthebikerider/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-math
 it.enc}{/Users/samthebikerider/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm
 -rm.enc}{/Users/samthebikerider/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/l
@@ -986,34 +981,10 @@ rs/samthebikerider/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><
 /Users/samthebikerider/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.
 pfb></Users/samthebikerider/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
 tti10.pfb>
-Output written on lab_2.pdf (17 pages, 527731 bytes).
-=======
- 15815 strings out of 482663
- 235004 string characters out of 5955139
- 554083 words of memory out of 5000000
- 30479 multiletter control sequences out of 15000+600000
- 599699 words of font info for 135 fonts, out of 8000000 for 9000
- 264 hyphenation exceptions out of 8191
- 41i,9n,42p,1213b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
-c/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/s
-hare/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
--ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/f
-onts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.
-pfb></usr/share/texmf/fonts/type1/public/lm/lmmi9.pfb></usr/share/texmf/fonts/t
-ype1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></us
-r/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/pub
-lic/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/te
-xmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri
-10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri9.pfb></usr/share/texmf/font
-s/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb>
-</usr/share/texmf/fonts/type1/public/lm/lmsy9.pfb></usr/share/texmf/fonts/type1
-/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pfb>
-Output written on lab_2.pdf (16 pages, 507563 bytes).
->>>>>>> bb27cf7361b85526c317e1140ea8b15a39912d94
+Output written on lab_2.pdf (18 pages, 529300 bytes).
 PDF statistics:
- 455 PDF objects out of 1000 (max. 8388607)
- 368 compressed objects within 4 object streams
- 61 named destinations out of 1000 (max. 500000)
+ 459 PDF objects out of 1000 (max. 8388607)
+ 371 compressed objects within 4 object streams
+ 62 named destinations out of 1000 (max. 500000)
  343 words of extra memory for PDF output out of 10000 (max. 10000000)
 
