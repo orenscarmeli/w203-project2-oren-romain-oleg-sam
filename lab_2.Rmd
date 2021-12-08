@@ -513,7 +513,3 @@ This variable relates to the opportunity of a product which is measured in eithe
 
 \subsection{Conclusion}
 Earlier in this report, we hypothesized that higher consumer ratings will lead to greater application success, as described by the number of installations of an application on the Google Play store. The models produced from this analysis do agree with this hypothesis, and confirm that higher rated applications have more success on the store. Along with this conclusion, we found that free applications, newer applications, and larger (in terms of storage size) applications are also positive indicators for application installation. Unfortunately, these results have low confidence ($adj. {r^2} = 0.247$), leading to some uncertainty about the validity of the proposed model. Still, we believe that the lack of significance is largely due to omitted variable bias, general irregularity in the data due to human randomness, and other aspects, provide enough explanation to assume some level of trust in the outcome of this analysis.
-
-\subsection{Discussion}
-
-\section{Appendix}
