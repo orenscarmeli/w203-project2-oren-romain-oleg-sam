@@ -319,18 +319,18 @@ The age of an application is measured using the proxy features `current_version`
 
 ``` {r distribution plots (version), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 
-ggplot(data = data_clean, aes(x = price)) +
+ggplot(data = data_clean, aes(x = current_version)) +
   geom_histogram() + 
   geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$current_version)) +
-  xlab("Price ($)") +
+  xlab("Current Version") +
   ylab("Frequency") +
   ggtitle("Raw distribution of application versions")
 
-ggplot(data = data_clean, aes(x = log_price)) +
+ggplot(data = data_clean, aes(x = log_current_version)) +
   geom_histogram() +
   geom_density(aes(y=0.5*..count..)) + 
-  geom_vline(xintercept = median(data_clean$current_version)) +
+  geom_vline(xintercept = median(data_clean$log_current_version)) +
   xlab(TeX("$\\log_{10}(current\\_version)$")) +
   ylab("Frequency") +
   ggtitle("Log-distribution of application versions")
