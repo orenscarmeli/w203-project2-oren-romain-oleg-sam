@@ -124,10 +124,11 @@ After these initial operations, the cleaned data set contains 7,226 records (i.e
 #install.packages('moments')
 #install.packages("corrplot") 
 
-# install.packages("DT")
-# install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
-# install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
-# install.packages("corrplot", repos = "http://cran.us.r-project.org")
+install.packages("DT")
+install.packages('GGally', repos='https://ftp.osuosl.org/pub/cran/')
+install.packages('moments', repos='https://ftp.osuosl.org/pub/cran/')
+install.packages("corrplot", repos = "http://cran.us.r-project.org")
+install.packages("equatiomatic")
 
 library(GGally)
 library(ggplot2) 
@@ -143,6 +144,7 @@ library(DT)
 library(knitr)
 library(kableExtra)
 library(latex2exp)
+library(equatiomatic)
 
 # pull in functions
 source('./functions/get_robust_se.R')
@@ -153,11 +155,11 @@ source('./functions/eda_build_quantile_table.R')
 knitr::opts_chunk$set(echo = TRUE)
 
 # remove scientific notation
-options(scipen = 999)
+# options(scipen = 999)
 ```
 
 ```{r load and clean data, echo = FALSE}
-data_clean <- get_clean_dataset(minimum_review_count=0)
+data_clean <- get_clean_dataset(minimum_review_count = 0)
 ```
 
 \subsection{Numeric Variables}
@@ -399,13 +401,13 @@ table_quantile_cat <-
   )
 
 kable(table_quantile_cat, caption = 'Quantile summary table', digits = 4, booktabs = T) %>%
-  kable_styling(latex_options = "HOLD_position")
+  kable_styling(latex_options = "HOLD_position", font_size = 8)
 
 kable(table_long_cat[Variable == "category"], caption = 'Sublabel summary table, application category', digits = 4, booktabs = T) %>%
-  kable_styling(latex_options = "HOLD_position")
+  kable_styling(latex_options = "HOLD_position", font_size = 8)
 
 kable(table_long_cat[Variable == "content_rating"], caption = 'Sublabel summary table, content rating', digits = 4, booktabs = T) %>%
-  kable_styling(latex_options = "HOLD_position")
+  kable_styling(latex_options = "HOLD_position", font_size = 8)
 
 ```
 
@@ -416,15 +418,7 @@ Overall, this analysis motivates using `category` and `content_rating` as explan
 
 \section{Statistical Models}
 
-To address the impact of consumer ratings on the success of an application (number of installations), we use ordinary least squares regression to model logarithmically transformed `installs` against `rating`. Two more explanatory models build off of this basic model, and include additional variables as described in section 4.2. 
-
-Based on our exploratory data analysis we decided on various interaction terms and transformations to use in our linear model. Our focus was to maximize its prediction accuracy (R^2) as well as maintaining a model that is explainable. The three models we tested are:
-
-1) $log(installs) = \beta_0 + \beta_1 \:rating + \epsilon$
-
-2) $log(installs) = \beta_0 + \beta_1 \:rating + \beta_2 \:log(size) + \beta_3 \:log(current\_version) + \beta_4 \:log(last\_updated) + \beta_5 \:is\_free + \beta_6 \:is\_family\_category + beta_7 \:is\_game\_category + beta_8 \:is\_tools\_category + beta_9 \:is\_content\_everyone + \epsilon$
-
-3) $log(installs) = \beta_0 + \beta_1 \:rating + \beta_2 \:log(size) + \beta_3 \:log(current\_version) + \beta_4 \:log(last\_updated) + \beta_5 \:is\_free + \beta_6 \:is\_content\_everyone + beta_7 \:rating \cdot is\_family\_category  + beta_8 \:rating \cdot is\_game\_category + beta_9 \:rating \cdot is\_tools\_category + \epsilon$
+To model the effect of consumer ratings on application success (the number of downloads an application accumulates), we will use ordinary least squares regression. Our first model will regress `log_installs`—the logarithmic transform of `installs`—against `rating`. We will then create two more explanatory models to expand on this baseline model, including additional control variables (Section 4.2) and interaction terms. Based on the results of our exploratory data analysis, we have also decided to use apply transformations to some of our variables. Our focus is to maximize the prediction $R^2$ while maintaining a model that is easily interpretable. The three models we will test are:
 
 ```{r preliminary models, echo=FALSE}
 model_small  <- lm(log_installs ~ 1 + rating, data = data_clean)
@@ -438,19 +432,25 @@ model_large  <- lm(log_installs ~ 1 + rating + log_size + log_current_version +
                      rating * is_tools_category,
                    data = data_clean)
 
-# plot(model_small)
-# plot(model_medium)
-# plot(model_large)
+extract_eq(model_small, wrap = TRUE, terms_per_line = 3, intercept = "beta", operator_location = "start")
+extract_eq(model_medium, wrap = TRUE, terms_per_line = 2, intercept = "beta", operator_location = "start")
+extract_eq(model_large, wrap = TRUE, terms_per_line = 2, intercept = "beta", operator_location = "start")
 ```
 
+```{r f-tests to compare models, echo = FALSE}
+f1 <- anova(model_small, model_medium)
+f2 <- anova(model_medium, model_large)
+```
+
+As justification for including additional covariates in the second and third models, we also conduct $F$-tests with the null hypothesis that the smaller model is the correct population model. Comparing the first and second model yields $F = `r signif(f1[2, 5], 3)`$ and $p = `r signif(f1[2, 6], 3)`$, allowing us to reject the null. Comparing the second and third models yields $F = `r signif(f2[2, 5], 3)`$ and $p = `r signif(f2[2, 6], 3)`$, also allowing us to reject the null.
 
 \section{Results}
 
-In this section, we present the results of the three OLS regression models described in the Statistical Models section.
+In this section, we present the results of the three OLS regression models described above. We discuss the statistical significance of the different coefficients, as well as their meaning in a practical sense.
 
 \subsection{OLS Regression Results}
 
-Presented here are the regression results of the 3 models described in the Section 7. The dependent variable for these models is the logarithmic number of application installs on the Google Play store (`log_installs`) in 2019, based on the `installs` variable. 
+Presented here are the regression results of the three regression models. The dependent variable for each of these models is `log_installs`—the logarithmic transformation of `installs`, denoting the raw install count for an application.
 
 ```{r results = "asis", echo=FALSE}
 # this should be table comparing regressions
@@ -468,9 +468,16 @@ stargazer(
   float = FALSE
 )
 ```
-From the regression results in Table 4, a few observations are of particular interest. First, across all models all coefficients are significant excluding two, `is_family_category` in Model 2, and `is_game_category` in Model 3. These variables were derived from the `category` variable in the raw dataset, which describes the category tagged for the application, i.e., Lifestyle, Game, Tools, etc. Additionally, these `category` variables are also the only coefficients which alternate around 0 across the different models, adding confusion to the direction of correlation with `log_installs`. 
 
-Considering these factors, the research team has decided that Model 2 is the best choice for this exercise. All coefficients in Model 2 (except for `is_family_category`) have a p-value < 0.01, and although the explanatory power of Model 3 (${r^2} = 0.250$) is slightly better than Model 2 (${r^2} = 0.247$), Model 2 is easier to interpret and explain and has more significant and consistent coefficients. Both models show that `rating` has a positive influence on `log_installs`, with each 1 unit increase in rating corresponding to a ~15% increase in `log_installs`. These models generally agree with our hypothesis regarding the direction of correlation between each coefficient and the number of application installations. Finally, it is worthwhile to note that these models provide an ${r^2}$ value that would not be acceptable in fields of hard science (e.g., physics, molecular biology, etc.), it would potentially be acceptable in the field of social sciences to help understand a causal relationship. Given the extreme variability between types and end-use of applications available on the Google Play Store, as well as other uncontrolled factors, we believe that this model provides a useful description of how consumer rating may impact the success of an application. 
+A few observations stand out from Table 4. First, all model coefficients are statistically significant excluding two, `is_family_category` in Model 2 and `is_game_category` in Model 3. These variables are derived from the `category` variable, describing the category of an application. The estimates for these coefficients also stand out in the sense that they alternate around zero; this indicates that the Tools and Game categories are poor standalone predictors of application success.
+
+Although the explanatory power of Model 3 ($R^2 = 0.250$) is slightly greater than that of Model 2 ($R^2 = 0.247$), we believe that the latter best represents the relationships among the different variables, as it contains fewer extraneous terms. In fact, all coefficients in Model 2 except for `is_family_category` have a $p$-value less than 0.01, providing strong evidence that these coefficients meaningfully improve our ability to predict application success.
+
+In all three models, we observe that `rating` has a positive influence on `log_installs`. Assuming all other variables are held constant, we predict that a one unit increase in consumer rating corresponds to a ~$15$% increase in the number of downloads. Notably, our estimates for the `rating` coefficient in Model 2 are lower than in Model 1, due to omitted-variable bias. As we mentioned in Section 3, including additional omitted variables may drive down our estimates even further.
+
+In general, the models agree with our hypotheses regarding the relationships between the independent variables and application success. However, some of our predictions were incorrect. We expected the size to negatively affect application success, with larger applications being installed less frequently. Surprisingly, the opposite is true; increasing download size by 1% leads to a 0.7% increase in the number of downloads. This could be because size is an indicator of production quality. We also expected price to positively affect success, but found that free applications are more successful than paid applications (on average, free applications receive 141% more downloads than paid applications). Also surprising is the fact that newer updates are installed less, which could be due to bias or a flaw in our methodology. One possible explanation is that newly updated apps are inherently less likely to be installed by nature. Finally, Model 3 shows that the interaction between `rating` and `category` may take precedence over the standalone variables. For example, we observe the relationship between rating and success is stronger for games than for family applications. Whereas a one unit increase in rating causes a 40% increase in downloads for games, the same increase causes a 26% decrease for family applications.
+
+It is worthwhile to note that none of these models have $R^2$ values that would traditionally be accepted in hard science fields such as physics or molecular biology. However, since our aim is to support the existence of a causal relationship in a social science field, low $R^2$ values may not be problematic. Given the extreme variability between types of applications, the lack of precision in the dependent variable, and other possible external factors, we still find that these models offer a useful description of how consumer rating affects application success. 
 
 \section{Model Limitations}
 
@@ -484,31 +491,48 @@ According to the Kaggle authors, this data set was collected by randomly scrapin
 \subsubsection{No Perfect Collinearity}
 \par We can immediately conclude that the variables included in our models are not perfectly collinear, as otherwise the regressions above would have failed. We can also assess near perfect collinearity for these variables by observing the robust standard errors returned by the regression model. In general, highly collinear features will have large standard errors. Since the standard errors of the coefficients are small relative to their magnitude, we can reasonably conclude that they are not nearly collinear.
 
-``` {r linear assumption plots, figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
-res <- resid(model_medium)
-plot(fitted(model_medium), res)
-abline(0,0)
-
-qqnorm(res)
-```
-
 \subsubsection{Linear Conditional Expectations}
-\par To verify the assumption of linear conditional expectations, we seek to show that there is no relationship between the model residuals and any of the predictor variables. That is, the model does not systematically underpredict or overpredict in certain regions of the input space. In the figure above, we see the relationship between the model residuals and metric-scale predictors. The residuals are generally well-centered around zero, although the model seems to underpredict when `log_reviews` is high and `rating` is low. The Q-Q plot shows the model residuals as a function of the model predictions. Here, the model seems to underpredict in the left-most and right-most regions, and slightly overpredict in the middle. Overall, we do generally see a linear relatoinship between the model residuals and the input features, so we do not find enough evidence to reject the assumption of linear conditional expectation.  
 
-``` {r error plot, figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
-plot(model_medium, which=3)
+To verify the assumption of linear conditional expectations, we seek to show that there is no relationship between the model residuals and any of the predictor variables. That is, the model does not systematically underpredict or overpredict in certain regions of the input space. In the figure above, we see the relationship between the model residuals and different predictors. The residuals are generally well-centered around zero, although the model seems to underpredict when `rating` and `log_current_version` are high. The last plot shows the model residuals as a function of the model predictions. Here, the model seems to underpredict in the right region and slightly overpredict in the left region. Overall, we do generally see a linear relationship between the model residuals and the input features, so we do not find enough evidence to reject the assumption of linear conditional expectation.  
+
+``` {r linear conditional expectations, figures-side, fig.show = "hold", fig.align = "center", out.width = "30%", echo = FALSE}
+# Rating
+ggplot(data = data_clean, mapping = aes(x = rating, y = resid(model_medium))) +
+  geom_point() + stat_smooth()
+
+# Size
+ggplot(data = data_clean, mapping = aes(x = log_size, y = resid(model_medium))) +
+  geom_point() + stat_smooth()
+
+# Current version
+ggplot(data = data_clean, mapping = aes(x = log_current_version, y = resid(model_medium))) +
+  geom_point() + stat_smooth()
+
+# Last updated
+ggplot(data = data_clean, mapping = aes(x = log_last_updated, y = resid(model_medium))) +
+  geom_point() + stat_smooth()
+
+# Current version
+ggplot(data = data_clean, mapping = aes(x = predict(model_medium), y = resid(model_medium))) +
+  geom_point() + stat_smooth()
 ```
+
 \subsubsection{Homoskedastic Errors}
-\par When assessing homoskedastic errors, we seek to determine the relationship between the variance of the model residuals and the predictors. If the homoskedastic assumption is satisfied, then we should observe a lack of relationship (i.e., constant error variance across the plotted range); conversely, if the data are heteroskedastic then the conditional variance will depend on the predictors (i.e., non-constant error variance across the plotted range). The above plot is an eyeball test of homoskedasticity, showing the model residuals as a function of the model predictions. We notice that the spread of the residuals is mostly consistent throughout the x range, although the right-hand side is somewhat narrower. As a more concrete assessment, we also perform a Breush-Pagan test with the null hypothesis that there are no heteroskedastic errors in the model. Since the $p$-value falls below our significance threshold of 0.001, we find enough evidence to reject the null hypothesis. In response to this failed assumption, we report robust standard errors (adjusted for heteroskedasticity) instead of non-adjusted errors.
 
-```{r error hist plot, figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
-hist(res, main = "Normal Distribution of Model Residuals", breaks=20)
+```{r homoskedastic errors, echo = FALSE}
+bp_test <- bptest(model_medium)
 ```
+
+\par 
+When assessing homoskedastic errors, we seek to determine the relationship between the variance of the model residuals and the predictors. If the homoskedastic assumption is satisfied, then we should observe a lack of relationship (i.e., constant error variance across the plotted range); conversely, if the data are heteroskedastic then the conditional variance will depend on the predictors (i.e., non-constant error variance across the plotted range). The above plot is an eyeball test of homoskedasticity, showing the model residuals as a function of the model predictions. We notice that the spread of the residuals is mostly consistent throughout the input space, although the left-hand side is somewhat narrower. As a more concrete assessment, we also perform a Breush-Pagan test with the null hypothesis that there are no heteroskedastic errors in the model. Since the $p$-value falls below our significance threshold of 0.001, we find enough evidence to reject the null hypothesis. In response to this failed assumption, we report robust standard errors (adjusted for heteroskedasticity) instead of non-adjusted errors.
 
 \subsubsection{Normally Distributed Errors}
 \par When assessing the normality of the error distribution, we seek to determine if the model residuals are approximately normally distributed. Above, we plot a histogram of the residuals associated with our model. In general, the residuals do seem to follow a normal distribution and we can reasonably justify the validity of our model and that our estimates are unbiased.
 
-Because our data fails to meet the assumption of homoskedasticity, we adopt the large-sample assumptions (assumptions 1 and 2) instead. Specifically, we report robust standard errors rather than non-adjusted errors in our results.
+```{r error hist plot, figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
+hist(resid(model_medium), main = "Distribution of model residuals", breaks = 20)
+plot(model_medium, which = 2)
+```
 
 \subsection{Structural Limitations of Our Model}
 The true causal diagram is undoubtedly more complex than the one we have outlined above. We have identified a sample of several omitted variables that could affect our statistical models and any conclusions we infer from them, shown in the second causal diagram below. We discuss the relationships these omitted variables have with our existing variables and the ways in which they could bias our results. Note that there are several other potential omitted variables that could furthermore impact the model, such as developer reputation, developer marketing, etc. However they are not discussed at length in interest of model simplicity. 
@@ -527,6 +551,7 @@ This variable relates to the opportunity of a product which is measured in eithe
 \section{Key Takeaways}
 
 \subsection{Conclusion}
-Earlier in this report, we hypothesized that higher consumer ratings will lead to greater application success, as described by the number of installations of an application on the Google Play store. The models produced from this analysis do agree with this hypothesis, and confirm that higher rated applications have more success on the store. Along with this conclusion, we found that free applications, newer applications, and larger (in terms of storage size) applications are also positive indicators for application installation. 
-\par With regards to larger applications, this relationship is surprising because we would have two competing expectations where cellular data limits and phone storage limitations would results in larger apps that are less likely to be installed -or- users would pay little attention to application size and there would not be a relationship. Also surprisingly, newer updates are installed less, this could be a bias in the data or modeling methodology that we would have to revisit to further understand. It is worth considering that newly updated apps are inherently less likely to be installed by nature. Furthermore, game categorization is significant and increases installs in `Model 2` however it was not found to be significant in `Model 3`. `rating * is game category` was found to be significant in `Model 3` which could be hypothesized that games targeting a wider audience by being rated for everyone are more likely to be downloaded.
-\par Though the explanatory power is low ($adj. {r^2} = 0.247$), it is sufficient enough to determine that a relationship exists. We believe further refining the modeling by including data from the discussed omitted variables would further improve the explanotory power of the model. 
+
+The goal of this analysis was to investigate the causal factors of application success. Specifically, we sought to assess our hypothesis that consumer rating has a positive influence on application success, as understood by the number of downloads an application receives. Our causal model included a total of five independent variables, though we identified additional omitted variables that could have impacted our results. We used a cross-sectional data set from Kaggle, containing records of 10,000 applications from the Google Play Store in 2019. After exploring, cleaning, and transforming the data, we created three regression models and interpreted their coefficients.
+
+The models we produced confirm that applications with higher consumer ratings are more successful than those with poor ratings. It is important to note, however, that we have not proven the existence of a causal link, but merely provided evidence in favor of one. Whatever the case, it is clear that other factors besides rating also contribute to application success. For instance, we also noticed that free applications, new applications, and large applications perform better than their counterparts. Unfortunately, our models have limited explanatory power (adjusted $R^2 = 0.247$), showing that our analysis has room for improvement. Further studies may seek to bring in additional variables in an effort to capture new aspects of the problem. New data could also help mitigate the issues we faced, such as omitted-variable bias, irregularities in the data, and imprecision in the outcome variable. We believe that this study is valuable to application developers, as it identifies key variables that directly influence success. Our findings may also be useful to Google and other moderators of mobile applications, who share an interest in preventing developers from unfairly inflating their ratings.
