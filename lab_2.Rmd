@@ -42,10 +42,7 @@ The goal of this study is to assess the causal factors of application success. S
 >\textit{Does having a higher consumer rating score lead to more downloads for Google Play Store applications?}
 
 \section{Causal Theory}
-Before we can discuss our data and research design, we must first describe the causal model which will serve as the reference point for our analysis.
-
-\subsection{Simple Causal Model}
-We identify five factors that bear causal influence on the success of an application. These are (1) consumer rating, (2) price, (3) category, (4) age, and (5) size. Our proposed causal graph is shown below.
+Before we can discuss our data and research design, we must first describe the causal model which will serve as the reference point for our analysis. We identify five factors that bear causal influence on the success of an application. These are (1) consumer rating, (2) price, (3) category, (4) age, and (5) size. Our proposed causal graph is shown below.
 
 ![A hypothetical causal diagram for Google Play Store applications.](./pictures/simple_model.PNG){#image1 .class width=50%}
 
@@ -98,7 +95,7 @@ In our case, the dependent variable is application success and the independent v
 * Consumer Rating — `rating` (the average consumer rating of an application, out of 5)
 * Price — `price` (the price of the application) and `type` (the price type of the application, free or paid)
 * Category — `category` (the category tagged for the application, i.e Lifestyle, Game) and `content_rating` (the official content rating given to the application, i.e Teen, Everyone, Mature 17+)
-* Age — `current_version` (the current version of the application) and `last_updated` (the number of days since the application was last updated)
+* Age — `current_version` (the current version of the application) and `last_updated` (the number of years since the application was last updated)
 * Size — `size` (the download size of the application, in units of MB)
 
 \section{Research Design}
@@ -149,9 +146,6 @@ source('./functions/eda_build_quantile_table.R')
 
 # Knitr options
 knitr::opts_chunk$set(echo = TRUE)
-
-# remove scientific notation
-# options(scipen = 999)
 ```
 
 ```{r load and clean data, echo = FALSE}
@@ -183,7 +177,7 @@ stargazer(
 )
 ```
 
-After the cleaning step, all feature values appear valid; there are no negative values, null values, or values close to infinity. Notably, only two fields contain zero values, `price` and `current_version`. This will be important when deciding whether or not to apply logarithmic transformations. We also note that we have treated `current_version` (the version of the application) as a metric variable. Although this is technically incorrect, we feel it is justified given this feature is ordinal in scale and has consistent intervals.
+After the cleaning step, all feature values appear valid; there are no negative values, null values, or values close to infinity. Notably, only two fields contain zero values, `price` and `current_version`. This will be important when deciding whether or not to apply logarithmic transformations. We also note that we have treated `current_version` (the version number of an application) as a metric variable. Although this is technically incorrect, we feel it is justified given that this feature is ordinal in scale and has consistent intervals.
 
 \par
 From the differences between their medians and means, `size` and `reviews` appear to have approximately normal distributions, while the others have strong right or left skews. Since we expect a causal pathway to exist from `installs` to `reviews` (i.e. high install counts lead to high review counts), we do not include `reviews` as a predictor in our analysis. 
@@ -197,7 +191,7 @@ skew_installs <- skewness(data_clean$installs, na.rm = TRUE)
 ```
 
 \par
-Application success is measured using the `installs` feature, which represents the raw download count of application. It is important to note here that `installs` is a binned feature. The bins start at 1 and scale upwards logarithmically; 1+, 5+, 10+, 100+, 500+, etc. For example, a value of 100+ means that an application has between 100 and 499 downloads. In the cleaning step, we remove the + sign and convert `installs` to a metric variable. This conversion is valid because the feature is ordinal and there is a measurable distance between bins. Given that this distance scales logarithmically, we can also claim that the distance between bins is consistent. Although there is precision error due to the fact that binning obscures the true download count, we believe that `installs` can be treated as a metric variable in practice. The raw distribution has a strong right skew of $\tilde{\mu}_3 = `r signif(skew_installs, 3)`$; the maximum is `r signif(max_installs, 3)` and the median is `r signif(med_installs, 3)`. Unsurprisingly, applying a logarithmic transformation causes the resulting distribution to resemble a normal distribution, which makes it an appropriate transformation for future modeling.
+Application success is measured using the `installs` feature, which represents the raw download count of an application. It is important to note here that `installs` is a binned feature. The bins start at 1 and scale upwards logarithmically; 1+, 5+, 10+, 100+, 500+, etc. For example, a value of 100+ means that the application has between 100 and 499 downloads. In the cleaning step, we remove the + sign and convert `installs` to a metric variable. This conversion is valid because the feature is ordinal and there is a measurable distance between bins. Given that this distance scales logarithmically, we can also claim that the distance between bins is consistent. Although there is precision error due to the fact that binning obscures the true download count, we believe that `installs` can be treated as a metric variable in practice. The raw distribution has a strong right skew of $\tilde{\mu}_3 = `r signif(skew_installs, 3)`$; the maximum is `r signif(max_installs, 3)` and the median is `r signif(med_installs, 3)`. Unsurprisingly, applying a logarithmic transformation causes the resulting distribution to resemble a normal distribution, which makes it an appropriate transformation for future modeling.
 
 ``` {r distribution plots (installs), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 ggplot(data = data_clean, aes(x = installs)) +
@@ -255,7 +249,7 @@ skew_size <- skewness(data_clean$size, na.rm = TRUE)
 ```
 
 \par
-Download size is measured using the `size` feature. `size` has a distribution that is slightly closer to normal than `installs`, though it still has a noticeable right-leaning tail ($\tilde{\mu}_3 = `r signif(skew_size, 3)`$). The maximum download size in the data set is `r signif(max_size, 3)` MB, and the median is `r signif(med_size, 3)` MB. Applying a logarithmic transformation shifts the distribution closer to normality, leading us to conclude that it is an appropriate transformation. Although the log-distribution fluctuates near the middle, we still find it more appropriate than the raw distribution. 
+Download size is measured using the `size` feature. `size` has a distribution that is slightly closer to normal than `installs`, though it still has a noticeable right-leaning tail ($\tilde{\mu}_3 = `r signif(skew_size, 3)`$). The maximum download size is `r signif(max_size, 3)` MB, and the median is `r signif(med_size, 3)` MB. Applying a logarithmic transformation shifts the distribution closer to normality. Although the log-distribution fluctuates near the middle, we still find it more appropriate than the raw distribution for modeling. 
 
 ``` {r distribution plots (size), figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 ggplot(data = data_clean, aes(x = size)) +
@@ -264,7 +258,7 @@ ggplot(data = data_clean, aes(x = size)) +
   geom_vline(xintercept = median(data_clean$size)) +
   xlab("Size") +
   ylab("Frequency") +
-  ggtitle("Raw distribution of download size")
+  ggtitle("Raw distribution of download sizes")
 
 ggplot(data = data_clean, aes(x = log_size)) +
   geom_histogram() +
@@ -272,7 +266,7 @@ ggplot(data = data_clean, aes(x = log_size)) +
   geom_vline(xintercept = median(data_clean$log_size)) +
   xlab(TeX("$\\log_{10}(Size)$")) +
   ylab("Frequency") +
-  ggtitle("Log-distribution of download size")
+  ggtitle("Log-distribution of download sizes")
 ```
 
 **Price**
@@ -337,26 +331,26 @@ ggplot(data = data_clean, aes(x = log_current_version)) +
   ylab("Frequency") +
   ggtitle("Log-distribution of current versions")
 
-ggplot(data = data_clean, aes(x = current_version)) +
+ggplot(data = data_clean, aes(x = last_updated)) +
   geom_histogram() + 
   geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$last_updated)) +
-  xlab("Days") +
+  xlab("Years") +
   ylab("Frequency") +
-  ggtitle("Raw distribution of days since the last update")
+  ggtitle("Raw distribution of years since the last update")
 
-ggplot(data = data_clean, aes(x = log_current_version)) +
+ggplot(data = data_clean, aes(x = log_last_updated)) +
   geom_histogram() +
   geom_density(aes(y=0.5*..count..)) + 
   geom_vline(xintercept = median(data_clean$log_last_updated)) +
-  xlab(TeX("$\\log_{10}(Days)$")) +
+  xlab(TeX("$\\log_{10}(Years)$")) +
   ylab("Frequency") +
-  ggtitle("Log-distribution of days since the last update")
+  ggtitle("Log-distribution of years since the last update")
 ```
 
 \subsubsection{Correlations}
 
-Aside from `log_reviews`, none of the other numeric features have strong correlations with `installs`. The high correlation coefficient between `log_reviews` and `log_installs` supports our hypothesis that there is a causal path from `installs` to `reviews`; indeed, consumers will generally only review applications once they have downloaded them. Since one of our goals is to build an efficient model, we would ideally like to see stronger correlations between the independent variables and the dependent variable. There may be latent predictive power in the interactions between variables, however. Notably, we observe that the correlation coefficient between `rating` and `log_installs` increases by a factor of 2 when we exclude applications with fewer than 100 reviews. This agrees with our assumption that consumer rating bears causal influence on application success, and motivates our choice to remove applications with review counts of less than 100. Lastly, the correlation plots do not indicate high levels of collinearity among the numeric variables. 
+Aside from `log_reviews`, none of the other numeric features have strong correlations with `installs`. The high correlation coefficient between `log_reviews` and `log_installs` supports our hypothesis that there is a causal path from `installs` to `reviews`; indeed, consumers will generally only review applications once they have downloaded them. Since one of our goals is to build an efficient model, we would ideally like to see stronger correlations between the independent variables and the dependent variable. There may be latent predictive power in the interactions between variables, however. Notably, we observe that the correlation coefficient between `rating` and `log_installs` increases by a factor of two when we exclude applications with fewer than 100 reviews. This agrees with our assumption that consumer rating bears causal influence on application success, and motivates our choice to remove applications with low review counts. Lastly, the correlation plots do not indicate high levels of collinearity among the numeric variables. 
 
 ``` {r correlation plots, figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 numeric_cols <- c(
@@ -419,14 +413,14 @@ kable(table_long_cat[Variable == "content_rating"], caption = "Content rating su
   kable_styling(latex_options = "HOLD_position", font_size = 8)
 ```
 
-From the quantile summary table, all four categorical features have at least a 20% dispersion across the sublabels with minimum and maximum average `log_installs`. This indicates that these features might possess predictive power as inputs to regression models. Notably, the `category` column seems to have the largest dispersion across groups, implying that it could be greatly impactful. We have omitted the table `android_version` as it is difficult to interpret. 
+From the quantile summary table, all four categorical features have at least a 20% dispersion across the minimum and maximum sublabels. This indicates that these features might possess predictive power as inputs to regression models. Notably, the `category` column seems to have the largest dispersion across groups, implying that it could be greatly impactful. We have omitted the variable `android_version` as it is difficult to interpret. 
 
 \par
-Overall, this analysis motivates using `category` and `content_rating` as explanatory variables in regression models. To ease interpretability and limit the number of variables in our models, we will use binned and binary versions of these variables, isolating the sublabels with the highest frequencies.
+Overall, this analysis motivates using `category` and `content_rating` as explanatory variables in regression models. To ease interpretability and limit the number of variables, we will use binned and binary versions of these variables, isolating the sublabels with the highest frequencies.
 
 \section{Statistical Models}
 
-To model the effect of consumer ratings on application success (as understood by the number of downloads an application receives), we will use ordinary least squares regression. Our first model will regress `log_installs`—the logarithmic transform of `installs`—against `rating`. We will then create two more explanatory models to expand on this baseline model, including additional control variables (Section 4.2) and interaction terms. Based on the results of our exploratory data analysis, we have also decided to apply transformations to some of our variables. Our focus is to maximize the predictive power $R^2$ while maintaining a model that is easily interpretable. The three models we will test are:
+To model the effect of consumer ratings on application success (as understood by the number of downloads an application receives), we will use ordinary least squares regression. Our first model will regress `log_installs`—the logarithmic transform of `installs`—against `rating`. We will then create two more explanatory models to expand on this baseline model, including additional control variables (Section 4.2) and interaction terms. Based on the results of our exploratory data analysis, we have also decided to apply transformations to some of our variables. Our focus is to maximize the predictive power $R^2$ while maintaining models that are easily interpretable. The three models we will test are:
 
 ```{r statistical models, echo=FALSE}
 model_small  <- lm(log_installs ~ 1 + rating, data = data_clean)
@@ -450,11 +444,11 @@ f1 <- anova(model_small, model_medium)
 f2 <- anova(model_medium, model_large)
 ```
 
-As justification for including additional covariates in the second and third models, we also conduct $F$-tests with the null hypothesis that the smaller model is the correct population model. Comparing the first and second models yields $F = `r signif(f1[2, 5], 3)`$ and $p = `r signif(f1[2, 6], 3)`$, allowing us to reject the null. Comparing the second and third models yields $F = `r signif(f2[2, 5], 3)`$ and $p = `r signif(f2[2, 6], 3)`$, also allowing us to reject the null.
+As justification for including additional covariates in the second and third models, we also conduct $F$-tests with the null hypothesis that the smaller model is the correct population model. Comparing the first and second models yields $F = `r signif(f1[2, 5], 3)`$ and $p = `r signif(f1[2, 6], 3)`$, allowing us to reject the null. Comparing the second and third models yields $F = `r signif(f2[2, 5], 3)`$ and $p = `r signif(f2[2, 6], 3)`$, also allowing us to reject the null. Therefore, our inclusion of these covariates is cogent.
 
 \section{Results}
 
-In this section, we present the results of the OLS regression models described above. We discuss the statistical significance of the different coefficients, as well as their meaning in a practical sense. The dependent variable for each of these models is `log_installs`—the logarithmic transformation of `installs`, denoting the raw install count for an application.
+In this section, we present the results of the OLS regression models described above. We discuss the statistical significance of the different coefficients, as well as their meaning in a practical sense. The dependent variable for each of these models is `log_installs`, the logarithmic transformation of application install count.
 
 ```{r regression results, results = "asis", echo=FALSE}
 # Regression results
@@ -463,7 +457,7 @@ stargazer(
   model_medium,
   model_large,
   header = FALSE,
-  title = "Model Results",
+  title = "Results of three regression models",
   type = "latex",
   se = list(get_robust_se(model_small), get_robust_se(model_medium), 
             get_robust_se(model_large)),
@@ -472,15 +466,15 @@ stargazer(
 )
 ```
 
-A few observations stand out from Table 5. First, all model coefficients are statistically significant within a threshold of $0.1$ excluding two, `is_family_category` in Model 2 and `is_game_category` in Model 3. These variables are derived from the `category` variable, describing the category of an application. The coefficient estimate for `is_family_category` also stands out in the sense that it is close to zero, indicating that the Family category is a poor standalone predictor of application success. In Model 3, the coefficient for `is_game_category` is an intercept term and is thus less relevant.
+A few observations stand out from Table 5. First, all model coefficients are statistically significant within a threshold of $0.1$ excluding two, `is_family_category` in Model 2 and `is_game_category` in Model 3. These variables are derived from `category`, which denotes the category of an application. The coefficient estimate for `is_family_category` also stands out in the sense that it is close to zero, indicating that the Family category is a poor standalone predictor of application success. In Model 3, the coefficient for `is_game_category` is an intercept term and is thus less relevant.
 
 Although the explanatory power of Model 3 ($R^2 = 0.251$) is slightly greater than that of Model 2 ($R^2 = 0.247$), we believe that the latter best represents the relationships among the different variables, as it contains fewer extraneous terms. In fact, all coefficients in Model 2 except for `is_family_category` have a $p$-value less than 0.01. This means that the probability of making a type I error for any of these coefficients (i.e. rejecting the null hypothesis assuming it is true) is less than 1%, providing strong evidence that these coefficients meaningfully improve our ability to predict application success.
 
-In all three models, we observe that `rating` has a positive influence on `log_installs`. Assuming all other variables are held constant, we predict that a one unit increase in consumer rating corresponds to a $14.1$% increase in the number of downloads. Notably, our estimates for the `rating` coefficient in Model 2 are lower than in Model 1, due to omitted-variable bias. As we mentioned in Section 3, including additional omitted variables may drive down our estimates even further.
+In all three models, we observe that `rating` has a positive influence on `log_installs`. Assuming all other variables are held constant, we predict that a one unit increase in consumer rating corresponds to a $14.1$% increase in the number of downloads. Notably, our estimates for the `rating` coefficient in Model 2 are lower than in Model 1, due to omitted-variable bias. As we mentioned in Section 9, including additional omitted variables may drive down our estimates even further.
 
-As predicted, free applications are more successful than paid applications, with free applications receiving 1.41% more downloads on average. We also notice that age influences application success; increasing the current version by 1% increases the number of downloads by 0.769%, and increasing the number of days since the last update by 1% decreases the number of downloads by 1.08%.
+As predicted, free applications are more successful than paid applications, with free applications receiving 1.41% more downloads on average. We also notice that age influences application success; increasing the current version by 1% increases the number of downloads by 0.769%, and increasing the number of years since the last update by 1% decreases the number of downloads by 1.08%.
 
-Although the models generally agree with our hypotheses, some of them were incorrect. For instance, we expected size to negatively affect application success, with larger applications being installed less frequently. Surprisingly, the opposite is true; increasing download size by 1% leads to a 0.7% increase in the number of downloads. This could be because size is an indicator of production quality. Also surprising is the fact that, holding other variables constant, newly updated apps are installed less, which could be due to bias or a flaw in our methodology. One possible explanation is that newly updated apps are inherently less likely to be installed by nature. Finally, Model 3 shows that the interaction between `rating` and `category` may take precedence over the standalone variables. For example, we observe that the relationship between rating and success is stronger for games than for family applications. Whereas a one unit increase in rating causes a 40% increase in downloads for games, the same change causes a 26% decrease for family applications.
+Although the models generally agree with our hypotheses, some of them were incorrect. For instance, we expected size to negatively affect application success, with larger applications being installed less frequently. Surprisingly, the opposite is true; increasing download size by 1% leads to a 0.701% increase in the number of downloads. This could be because size is an indicator of production quality. Also surprising is the fact that, holding other variables constant, newly updated applications are installed less, which could be due to bias or a flaw in our methodology. One possible explanation is that newly updated applications are inherently less likely to be installed, since they have not had as much time to reach consumers. Finally, Model 3 shows that the interaction between `rating` and `category` may take precedence over the standalone variables. For example, we observe that the relationship between rating and success is stronger for games than for family applications. Whereas a one unit increase in rating causes a 40.2% increase in downloads for games, the same change causes a 26.0% decrease for family applications.
 
 It is worthwhile to note that none of these models have $R^2$ values that would traditionally be accepted in hard science fields such as physics or molecular biology. However, since our aim is to support the existence of a causal relationship in a social science field, low $R^2$ values may not be problematic. Given the extreme variability between types of applications, the lack of precision in the dependent variable, and other possible external factors, we still find that these models offer a useful description of how consumer rating affects application success. 
 
@@ -500,7 +494,7 @@ We can immediately conclude that the variables included in our models are not pe
 
 \subsubsection{Linear Conditional Expectations}
 
-To verify the assumption of linear conditional expectations, we seek to show that there is no relationship between the model residuals and the predictors. That is, the model does not systematically underpredict or overpredict in certain regions of the input space. In the figure above, we see the relationship between the model residuals and metric-scale predictors. The residuals are generally well-centered around zero, although the model seems to underpredict when `rating` and `log_current_version` are high. The last plot shows the model residuals as a function of the model predictions. Here, the model seems to underpredict in the right region and slightly overpredict in the left region. Despite some inconsistencies, we do not find enough evidence to reject the assumption of linear conditional expectations.  
+To verify the assumption of linear conditional expectations, we seek to show that there is no relationship between the model residuals and the predictors. That is, the model does not systematically underpredict or overpredict in certain regions of the input space. In the figures below, we plot the relationship between the model residuals and metric-scale predictors. The residuals are generally well-centered around zero, although the model seems to underpredict when `rating` and `log_current_version` are high. The last plot shows the model residuals as a function of the model predictions. Here, the model seems to slightly underpredict in the right region and overpredict in the left region. Despite some inconsistencies, we do not find enough evidence to reject the assumption of linear conditional expectations.  
 
 ``` {r linear conditional expectations, figures-side, fig.show = "hold", fig.align = "center", out.width = "30%", echo = FALSE}
 # Rating
@@ -526,7 +520,7 @@ ggplot(data = data_clean, mapping = aes(x = predict(model_medium), y = resid(mod
 
 \subsubsection{Homoskedastic Errors}
 
-When assessing homoskedastic errors, we seek to determine the relationship between the variance of the model residuals across the range of predictions. If the homoskedastic assumption is satisfied, then we should observe a lack of relationship (i.e. constant error variance across the plotted range); conversely, if the data are heteroskedastic then the conditional variance will depend on the predictors (i.e. non-constant error variance across the plotted range). The plot below is an eyeball test of homoskedasticity, showing the model residuals as a function of the model predictions. We notice that the spread of the residuals is mostly consistent throughout the input space, although the left-hand side is somewhat narrower. As a more concrete assessment, we also perform a Breush-Pagan test with the null hypothesis that there are no heteroskedastic errors in the model. Since the $p$-value falls below our significance threshold of 0.001, we find enough evidence to reject the null hypothesis. In response to this failed assumption, we report robust standard errors (adjusted for heteroskedasticity) instead of non-adjusted errors.
+When assessing homoskedastic errors, we seek to determine if the variance of the model residuals depends on the predictors. If the homoskedastic assumption is satisfied, then we should observe a lack of relationship (i.e. constant error variance across the input space); conversely, if the data are heteroskedastic then the conditional variance will depend on the predictors (i.e. non-constant error variance across the input space). The plot below is an eyeball test of homoskedasticity, showing the model residuals as a function of the model predictions. We notice that the spread of the residuals is mostly consistent throughout the input space, although the left-hand side is somewhat narrower. As a more concrete assessment, we also perform a Breush-Pagan test with the null hypothesis that there are no heteroskedastic errors in the model. Since the $p$-value falls below a significance threshold of 0.001, we find enough evidence to reject the null hypothesis. In response to this failed assumption, we report robust standard errors (adjusted for heteroskedasticity) instead of non-adjusted errors.
 
 ```{r homoskedastic errors, fig.show = "hold", fig.align = "center", out.width = "50%", echo = FALSE}
 plot(model_medium, which = 1)
@@ -535,7 +529,7 @@ plot(model_medium, which = 1)
 
 \subsubsection{Normally Distributed Errors}
 
-When assessing the normality of the error distribution, we seek to determine if the model residuals are normally distributed. Below, we show a histogram and a Q-Q plot of the model residuals. We notice that the left tail is slightly fatter than expected, while the right tail is slightly thinner. However, the residuals generally seem to follow a normal distribution, so we can reasonably justify this assumption and conclude that our estimates are unbiased.
+Here, we seek to determine if the model residuals are normally distributed. Below, we show a histogram and a Q-Q plot of the model residuals. We notice that the left tail is slightly fatter than expected, while the right tail is slightly thinner than expected. However, because the residuals generally seem to follow a normal distribution, we can reasonably justify this assumption and conclude that our estimates are unbiased.
 
 ```{r error distribution plot, figures-side, fig.show = "hold", out.width = "50%", echo = FALSE}
 hist(resid(model_medium), main = "Distribution of model residuals", breaks = 20)
@@ -543,16 +537,16 @@ plot(model_medium, which = 2)
 ```
 
 \subsection{Structural Limitations}
-The true causal diagram is undoubtedly more complex than the one we have outlined above. We have identified a few omitted variables that could affect our statistical models, shown in the second causal diagram below. We discuss the relationships these omitted variables have with our existing variables and the ways in which they could bias our results.
+The true causal diagram is undoubtedly more complex than the one we have outlined in Section 3. We have identified a few omitted variables that could affect our statistical models, shown in the second causal diagram below. We discuss the relationships these omitted variables have with our existing variables and the ways in which they could bias our results.
 
 \subsubsection{Brand Awareness}
-Brand awareness is the measure of how memorable and recognizable a brand is to its target audience. In the context of our research question, we understand this variable as the percentage of consumers that have the ability to download an application from the Google Play store and are familiar with the application brand. We believe brand awareness to be positively correlated with both application success and consumer rating. Greater brand awareness widens the acquisition funnel for an application, leading to more downloads. Organizations that publish successful applications likely have more disposable income for marketing and hence better awareness among consumers. Omitting this variable from our models creates a positive bias that pushes the `rating` coefficient away from zero, causing us to overestimate the relationship between consumer rating and application success. 
+Brand awareness is the measure of how memorable and recognizable a brand is to its target audience. In the context of our research question, we understand this variable as the percentage of consumers that have the ability to download an application from the Google Play store and are familiar with the application brand. We believe brand awareness to be positively correlated with both application success and consumer rating. Greater brand awareness widens the acquisition funnel for applications, leading to more downloads. Organizations that publish highly rated applications likely have more disposable income for marketing and hence better awareness among consumers. Omitting this variable from our models creates a positive bias that pushes the `rating` coefficient away from zero, causing us to overestimate the relationship between consumer rating and application success. 
 
 \subsubsection{Application Rankings}
-An internal factor that could affect application success is the business logic defined by Google, specifically how the company ranks applications and lets users explore products. We believe this variable can be operationalized through a numeric value representing an application's rank within its respective category. Application rankings should positively influence success, as we expect consumers to discover highly ranked applications more easily. Assuming Google uses rating as a metric for defining an application's rank, the two variables will also be positively correlated. As a result, the omitted-variable bias would be positive, pushing the coefficient for `rating` further from zero. 
+An internal factor that could affect application success is the business logic defined by Google, specifically how the company ranks applications and lets users explore products. We believe this variable can be operationalized through a numeric value representing an application's rank within its respective category. Application rankings should positively influence success, as we expect consumers to discover highly ranked applications more easily. Assuming Google uses rating as a metric for defining an application's rank, ranking and rating will also be positively correlated. As a result, the omitted-variable bias is positive, pushing the coefficient for `rating` further from zero. 
 
 \subsubsection{Total Addressable Market}
-The total addressable market relates to the opportunity contained in an application (measured in revenue or in the number of available consumers), which varies according to its functionality. In general, we believe this variable is positively correlated with application success, as larger markets tend to have greater potential to drive downloads. We do not anticipate a strong association with consumer rating, though we do expect a positive one; the bigger the market, the more crucial it is to build a differentiated product that offers quality features. Omitting this variable also creates a positive bias that inflates the coefficient for `rating` and leads us to overestimate its effect on application success. 
+The total addressable market relates to the innate opportunity contained in an application (measured in revenue or in the number of available consumers), which varies according to its functionality. In general, we believe this variable is positively correlated with application success, as larger markets tend to have greater potential to drive downloads. We do not anticipate a strong association with consumer rating, though we do expect a positive one; the bigger the market, the more crucial it is to build a differentiated product that offers quality features. Omitting this variable also creates a positive bias that inflates the coefficient for `rating` and leads us to overestimate its effect on application success. 
 
 ![A revised version of the causal diagram including omitted variables.](./pictures/complex_model.PNG){#image2 .class width=50%}
 
@@ -560,7 +554,7 @@ The total addressable market relates to the opportunity contained in an applicat
 
 The goal of this analysis was to investigate the causal factors of application success. Specifically, we sought to assess our hypothesis that consumer rating has a positive influence on application success, as understood by the number of downloads an application receives. Our causal model included a total of five independent variables, though we identified additional omitted variables that could have impacted our results. We used a cross-sectional data set from Kaggle, containing records of 10,000 applications from the Google Play Store in 2019. After exploring, cleaning, and transforming the data, we created three regression models and interpreted their coefficients.
 
-The models we produced confirm that applications with higher consumer ratings are more successful than those with poor ratings. It is important to note, however, that we have not proven the existence of a causal link, but merely provided evidence in favor of one. Whatever the case, it is clear that other factors besides rating also contribute to application success. For instance, we also noticed that free applications, applications with many versions, and large applications perform better than their counterparts. Unfortunately, our models have limited predictive power (adjusted $R^2 = 0.247$), showing that our analysis has room for improvement. Further studies may seek to bring in additional variables in an effort to capture new aspects of the problem. New data could also help mitigate the issues we faced, such as omitted-variable bias, irregularities in the data, and imprecision in the outcome variable. We believe that this study is valuable to application developers, as it identifies key variables that directly influence success. Our findings may also be useful to Google and other moderators of mobile applications, who share an interest in preventing developers from unfairly inflating their ratings and understanding the dynamics of consumer environments.
+The models we produced confirm that applications with higher consumer ratings are more successful than those with poor ratings. It is important to note, however, that we have not proven the existence of a causal link, but merely provided evidence in favor of one. Whatever the case, it is clear that other factors besides rating also contribute to application success. For instance, we also noticed that free applications, applications with many versions, and large applications perform better than their counterparts. Unfortunately, our models have limited predictive power (adjusted $R^2 = 0.247$), showing that our analysis has room for improvement. Further studies may seek to bring in additional variables in an effort to capture new aspects of the problem. New data could also help mitigate the issues we faced, such as omitted-variable bias, irregularities in the data, and imprecision in the outcome variable. We believe that this study is valuable to application developers, as it identifies key variables that may influence success. Our findings may also be useful to Google and other moderators of mobile applications, who share an interest in understanding the dynamics of consumer environments.
 
 \section{Appendix}
 
