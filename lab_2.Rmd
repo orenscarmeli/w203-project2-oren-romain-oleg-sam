@@ -13,7 +13,7 @@ header_includes:
 ---
 
 ```{r setup, include=FALSE} 
-knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.pos = 'H') 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.pos = "H") 
 options(tinytex.verbose = TRUE)
 ```
 
@@ -47,6 +47,7 @@ Before we can discuss our data and research design, we must first describe the c
 
 \subsection{Simple Causal Model}
 We identify five factors that bear causal influence on the success of an application. These are (1) consumer rating, (2) price, (3) category, (4) age, and (5) size. Our proposed causal graph is shown below.
+\par
 ![A hypothetical causal diagram for Google Play Store applications.](./pictures/simple_model.PNG){#image1 .class width=50%}
 
 
@@ -61,9 +62,7 @@ The leading independent variable of interest is consumer rating. We hypothesize 
 Although we have not included it in the diagram, there is the possibility that a reverse causal pathway exists from application success to consumer rating. Successful applications are those that are enjoyable to a large number of consumers. Therefore, it is possible that users will rate applications with high download counts higher than applications with low download counts because they are primed to believe that such applications are better—otherwise, the successful applications would not have received so many downloads. Generally, we expect the reverse pathway to be weaker than the forward one. If rating and success have positive effects on one another, however, our models may suffer from positive feedback. We will discuss the implications of this effect in Section 9.
 
 \subsubsection{Price}
-We expect price to have a causal effect on application success. Generally, we believe that free applications will have higher download counts due to the lack of a monetary barrier. Of course, this may not always be the case, as paid applications could offer better features and more desirable experiences, thus encouraging downloads.
-
-We also anticipate a causal pathway from price to consumer rating. In particular, we believe that consumers are more likely to rate paid applications positively than they are to rate free applications positively, since the former type offers better features. 
+We expect price to have a causal effect on application success. Generally, we believe that free applications will have higher download counts due to the lack of a monetary barrier. Of course, this may not always be the case, as paid applications could offer better features and more desirable experiences, thus encouraging downloads. We also anticipate a causal pathway from price to consumer rating. In particular, we believe that consumers are more likely to rate paid applications positively than they are to rate free applications positively, since the former type offers better features. 
 
 \subsubsection{Category}
 \par
@@ -73,7 +72,8 @@ Category is also a predictor of consumer rating. Due to stylistic and functional
 
 \subsubsection{Age}
 \par
-If we are to interpret application success in terms of the number of downloads an application accumulates, then the age of an application is necessarily an influential factor. Applications can only receive more downloads as time passes, so the longer an application remains on the Google Play Store, the more downloads it is likely to have. As an example of why this is important, consider two applications: one that was uploaded one year ago, and one that was uploaded one week ago. The older application receives 100 downloads a month for the whole year while the newer application receives 1,000 downloads in one week. If we were to only compare the raw download counts (1,200 to 1,000), it would seem as if the older application is more successful. By bringing age into the analysis, we are able to compare the applications by download rate instead of count, thus realizing that the newer application is more successful than its older counterpart.
+If we are to interpret application success in terms of the number of downloads an application accumulates, then the age of an application is necessarily an influential factor. Applications can only receive more downloads as time passes, so the longer an application remains on the Google Play Store, the more downloads it is likely to have. As an example of why this is important, consider two applications: one that was uploaded one year ago, and one that was uploaded one week ago. The older application receives 100 downloads a month for the whole year while the newer application receives 1,000 downloads in one week. If we were to only compare the raw download counts (1,200 to 1,000), it would seem as if the older application is more successful. By bringing age into the analysis, we are able to compare the applications by download rate instead of count, thus realizing that the newer application is more successful than its older counterpart. 
+
 \par
 We do not expect age to have causal effects on the other explanatory variables, though it might be possible to argue that consumer rating and price are affected by age. Unless our analysis clearly demonstrates otherwise, we will assume these effects are negligible.
 
@@ -538,8 +538,7 @@ plot(model_medium, which = 2)
 \subsection{Structural Limitations of Our Model}
 The true causal diagram is undoubtedly more complex than the one we have outlined above. We have identified a sample of several omitted variables that could affect our statistical models and any conclusions we infer from them, shown in the second causal diagram below. We discuss the relationships these omitted variables have with our existing variables and the ways in which they could bias our results. Note that there are several other potential omitted variables that could furthermore impact the model, such as developer reputation, developer marketing, etc. However they are not discussed at length in interest of model simplicity. 
 
-![A revised version of the causal diagram including omitted variables.](./pictures/complex_model.PNG){#image2 .class width=50%}
-
+\par
 \subsubsection{Brand Awareness}
 Brand awareness is the measure of how memorable and recognizable a brand is to its target audience. For our specific research question, we think of this concept as the percentage of consumers, whom have the capability to download apps from the Google Play store, that are familiar with the brand. We believe brand awareness to be positively correlated with both consumer success and rating. Larger awareness expands the acquisition funnel for an organization's application leading to more installs. Organizations with quality products likely have more disposable cash for marketing and thus better awareness among consumers. This would make the bias direction positive which is the same direction of the rating coefficient as our model. Based on this reasoning, the bias would be away from zero and causing us to overestimate this model coefficients.
 
@@ -548,6 +547,9 @@ Outside of the Google Play store user interface, we hypothesize brand awareness 
 
 \subsubsection{Total Addressable Market}
 This variable relates to the opportunity of a product which is measured in either revenue or the number of customers that would be interested in the product. This varies based on the functionality of the product/service. For this omitted variable we are focusing on the number of available customers. We believe this is positively correlated with install count as it provides a larger funnel to acquire app downloads. We do not expect a very strong association with app rating, but would hypothesize a positive one. The larger the market, the more crucial it is the build a differentiated product with a quality experience. This would make the bias direction positive which is the same direction of the rating coefficient as our model. Based on this reasoning, the bias would be away from zero and causing us to overestimate this coefficient.
+
+\par
+![A revised version of the causal diagram including omitted variables.](./pictures/complex_model.PNG){#image2 .class width=50%}
 
 \section{Key Takeaways}
 
